@@ -1,7 +1,7 @@
 title: python设计模式之单例模式
 slug: python-singleton
 date: 2013-05-16
-category: 
+category: 设计模式 
 tags: Design Patterns
 
 单例模式
