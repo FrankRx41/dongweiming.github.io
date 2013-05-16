@@ -89,7 +89,7 @@ s3_upload: publish
 github: html
 	ghp-import $(OUTPUTDIR)
 	git push origin gh-pages:gh-pages 
-	git push origin master
+	git push origin master:master
 
 .PHONY: html help clean regenerate serve devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload github
 
