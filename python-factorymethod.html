@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之工厂方法模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-factorymethod.html" rel="bookmark"
+           title="Permalink to python设计模式之工厂方法模式">python设计模式之工厂方法模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-17T00:00:00">
+                五 17 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>工厂方法模式</h2>
+<p>这是第二种'工厂'模式，Factorymethod和简单工厂的区别我想是：
+简单工厂是用工厂类的<em>不同</em>方法返回不同产品类实例，
+工厂方法根据工厂类的一个方法的不同参数返回不同产品类实例</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Cup</span><span class="p">:</span>
+    <span class="n">color</span> <span class="p">=</span> &quot;&quot;
+
+    # 这里我用类方法实现工厂方法 
+    <span class="p">@</span><span class="n">staticmethod</span>
+    <span class="n">def</span> <span class="n">getCup</span><span class="p">(</span><span class="n">cupColor</span><span class="p">):</span>   
+        <span class="k">if</span> <span class="p">(</span><span class="n">cupColor</span> <span class="o">==</span> &quot;<span class="n">red</span>&quot;<span class="p">):</span>
+            <span class="k">return</span> <span class="n">RedCup</span><span class="p">()</span>
+        <span class="n">elif</span> <span class="p">(</span><span class="n">cupColor</span> <span class="o">==</span> &quot;<span class="n">blue</span>&quot;<span class="p">):</span>
+            <span class="k">return</span> <span class="n">BlueCup</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">None</span>
+
+<span class="n">class</span> <span class="n">RedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">):</span>
+    <span class="n">color</span> <span class="p">=</span> &quot;<span class="n">red</span>&quot;
+
+<span class="n">class</span> <span class="n">BlueCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">):</span>
+    <span class="n">color</span> <span class="p">=</span> &quot;<span class="n">blue</span>&quot;
+</pre></div>
+
+
+<p>这样测试一下吧</p>
+<div class="highlight"><pre><span class="c"># 给这个共用的方法传入参数&#39;red&#39;</span>
+<span class="n">redCup</span> <span class="p">=</span> <span class="n">Cup</span><span class="p">.</span><span class="n">getCup</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+<span class="c"># 这里返回RedCup类的实例</span>
+<span class="nb">print</span> <span class="s">&quot;%s(%s)&quot;</span> <span class="c">% (redCup.color, redCup.__class__.__name__)</span>
+
+<span class="n">blueCup</span> <span class="p">=</span> <span class="n">Cup</span><span class="p">.</span><span class="n">getCup</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;%s(%s)&quot;</span> <span class="c">% (blueCup.color, blueCup.__class__.__name__)</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+        <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "python-factorymethod.html";
+        var disqus_url = "./python-factorymethod.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://sgithub.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

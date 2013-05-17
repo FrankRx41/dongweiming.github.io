@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>小明明s Github</title><link href="http://dongweiming.github.io/" rel="alternate"></link><link href="http://dongweiming.github.io/feeds/all.atom.xml" rel="self"></link><id>http://dongweiming.github.io/</id><updated>2013-05-17T00:00:00+08:00</updated><entry><title>python设计模式之工厂方法模式</title><link href="http://dongweiming.github.io/python-factorymethod.html" rel="alternate"></link><updated>2013-05-17T00:00:00+08:00</updated><author><name>Dong Weiming</name></author><id>tag:dongweiming.github.io,2013-05-17:python-factorymethod.html</id><summary type="html">&lt;h2&gt;工厂方法模式&lt;/h2&gt;
+&lt;p&gt;这是第二种'工厂'模式，Factorymethod和简单工厂的区别我想是：
+简单工厂是用工厂类的&lt;em&gt;不同&lt;/em&gt;方法返回不同产品类实例，
+工厂方法根据工厂类的一个方法的不同参数返回不同产品类实例&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Cup&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;color&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &amp;quot;&amp;quot;
+
+    # 这里我用类方法实现工厂方法 
+    &lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;staticmethod&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;getCup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cupColor&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;   
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cupColor&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;red&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;RedCup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;elif&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cupColor&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;blue&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;BlueCup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;None&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;RedCup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Cup&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;color&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;red&lt;/span&gt;&amp;quot;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;BlueCup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Cup&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;color&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;blue&lt;/span&gt;&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样测试一下吧&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 给这个共用的方法传入参数&amp;#39;red&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;redCup&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Cup&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getCup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;red&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c"&gt;# 这里返回RedCup类的实例&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%s(%s)&amp;quot;&lt;/span&gt; &lt;span class="c"&gt;% (redCup.color, redCup.__class__.__name__)&lt;/span&gt;
+
+&lt;span class="n"&gt;blueCup&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Cup&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getCup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;blue&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%s(%s)&amp;quot;&lt;/span&gt; &lt;span class="c"&gt;% (blueCup.color, blueCup.__class__.__name__)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Design Patterns"></category></entry><entry><title>python设计模式之简单工厂模式</title><link href="http://dongweiming.github.io/python-simplefactory.html" rel="alternate"></link><updated>2013-05-17T00:00:00+08:00</updated><author><name>Dong Weiming</name></author><id>tag:dongweiming.github.io,2013-05-17:python-simplefactory.html</id><summary type="html">&lt;h2&gt;简单工厂模式&lt;/h2&gt;
+&lt;p&gt;我将连续写三个工厂模式，个人理解，这里先说简单工厂模式
+Simple factory也就是&lt;em&gt;通过一个工厂类&lt;/em&gt;的参数来决定产生的产品类, 也就是说从工厂的不同方法访问不同的需要被生产的类&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;p&gt;我这里搞了个例子&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Factory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methodName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;constructor&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &amp;quot;&amp;quot;&amp;quot;注册产品&amp;quot;&amp;quot;&amp;quot;
+        &lt;span class="n"&gt;_args&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;constructor&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="n"&gt;_args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        # 给类添加属性，值就是相应间接调用类的实例
+        &lt;span class="n"&gt;setattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methodName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Functor&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;unregister&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methodName&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &amp;quot;&amp;quot;&amp;quot;取消注册&amp;quot;&amp;quot;&amp;quot;
+        &lt;span class="n"&gt;delattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;methodName&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Functor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        # 确定&lt;span class="k"&gt;function&lt;/span&gt;是可以被调用的
+        &lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;callable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_function&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;function&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_args&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_kargs&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kargs&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__call__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &amp;quot;&amp;quot;&amp;quot;重载了括号运算符&lt;span class="p"&gt;,&lt;/span&gt; 让工厂类的相关属性成为可调用的&amp;quot;&amp;quot;&amp;quot;
+        &lt;span class="n"&gt;_args&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;_args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;_kargs&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;_kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_function&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_kargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看调用，每次注册一个属性，就可以调用这个属性返回当时设置属性的类的实例&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Factory&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;pass&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;createA&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;createA&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;__main__&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; 01491&lt;span class="n"&gt;E7C&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;         &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;         &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;         
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;createB&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;createB&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;createB&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; 
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;
+1
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;
+2
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;     &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;2&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt;         &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt; 
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;createC&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;3&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;createC&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;2&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;4&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 3&lt;span class="p"&gt;,&lt;/span&gt; 4&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;importSerialization&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;__import__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;cPickle&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pickle&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;importSerialization&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pickle&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;cPickle&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;built&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;importSerialization&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;__import__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;marshal&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pickle&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;importSerialization&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pickle&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;marshal&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;built&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unregister&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;importSerialization&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;importSerialization&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;Traceback&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;most&lt;/span&gt; &lt;span class="n"&gt;recent&lt;/span&gt; &lt;span class="n"&gt;call&lt;/span&gt; &lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="n"&gt;File&lt;/span&gt; &amp;quot;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;interactive&lt;/span&gt; &lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; 1&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; ?
+&lt;span class="n"&gt;AttributeError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Factory&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt; &lt;span class="n"&gt;has&lt;/span&gt; &lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;attribute&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;importSerialization&amp;#39;&lt;/span&gt;
+&amp;quot;&amp;quot;&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Design Patterns"></category></entry><entry><title>python设计模式之单例模式</title><link href="http://dongweiming.github.io/python-singleton.html" rel="alternate"></link><updated>2013-05-16T00:00:00+08:00</updated><author><name>Dong Weiming</name></author><id>tag:dongweiming.github.io,2013-05-16:python-singleton.html</id><summary type="html">&lt;h2&gt;单例模式&lt;/h2&gt;
+&lt;p&gt;通过Singleton模式，全局保证只有一个实例，在python中怎么用呢？&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;p&gt;我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;ConnectionSingleton&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &amp;quot;&amp;quot;&amp;quot;&lt;span class="n"&gt;Represents&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;MongoDB&lt;/span&gt; &lt;span class="n"&gt;connection&lt;/span&gt;&amp;quot;&amp;quot;&amp;quot;
+    &lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;None&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwds&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pymongo&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MongoClient&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;调用的时候可以&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ConnectionSingleton&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;和pymongo相关的温馨提示&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;请不要使用pymongo.Connection，官网不推荐，并且有个问题，当你close它的实例，连接数并没有立刻减少&lt;/li&gt;
+&lt;li&gt;做好数据库操作的类变量的封装，调用完毕要显式close/disconnect&lt;/li&gt;
+&lt;/ol&gt;</summary><category term="Design Patterns"></category></entry></feed>
