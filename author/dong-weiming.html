@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>小明明s Github - Dong Weiming</title>
+        <link rel="stylesheet" href="../theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="../">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li ><a href="../category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
+
+                            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="../python-factorymethod.html">python设计模式之工厂方法模式</a></h1> 
+                    <footer class="post-info">
+        <abbr class="published" title="2013-05-17T00:00:00">
+                五 17 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info --><h2>工厂方法模式</h2>
+<p>这是第二种'工厂'模式，Factorymethod和简单工厂的区别我想是：
+简单工厂是用工厂类的<em>不同</em>方法返回不同产品类实例，
+工厂方法根据工厂类的一个方法的不同参数返回不同产品类实例, 但是这些产品类一般都有共同的父类</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Cup</span><span class="p">:</span>
+    <span class="n">color</span> <span class="p">=</span> &quot;&quot;
+
+    # 这里我用类方法实现工厂方法 
+    <span class="p">@</span><span class="n">staticmethod</span>
+    <span class="n">def</span> <span class="n">getCup</span><span class="p">(</span><span class="n">cupColor</span><span class="p">):</span>   
+        <span class="k">if</span> <span class="p">(</span><span class="n">cupColor</span> <span class="o">==</span> &quot;<span class="n">red</span>&quot;<span class="p">):</span>
+            <span class="k">return</span> <span class="n">RedCup</span><span class="p">()</span>
+        <span class="n">elif</span> <span class="p">(</span><span class="n">cupColor</span> <span class="o">==</span> &quot;<span class="n">blue</span>&quot;<span class="p">):</span>
+            <span class="k">return</span> <span class="n">BlueCup</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">None</span>
+
+<span class="n">class</span> <span class="n">RedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">):</span>
+    <span class="n">color</span> <span class="p">=</span> &quot;<span class="n">red</span>&quot;
+
+<span class="n">class</span> <span class="n">BlueCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">):</span>
+    <span class="n">color</span> <span class="p">=</span> &quot;<span class="n">blue</span>&quot;
+</pre></div>
+
+
+<p>这样测试一下吧</p>
+<div class="highlight"><pre><span class="c"># 给这个共用的方法传入参数&#39;red&#39;</span>
+<span class="n">redCup</span> <span class="p">=</span> <span class="n">Cup</span><span class="p">.</span><span class="n">getCup</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+<span class="c"># 这里返回RedCup类的实例</span>
+<span class="nb">print</span> <span class="s">&quot;%s(%s)&quot;</span> <span class="c">% (redCup.color, redCup.__class__.__name__)</span>
+
+<span class="n">blueCup</span> <span class="p">=</span> <span class="n">Cup</span><span class="p">.</span><span class="n">getCup</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s">&quot;%s(%s)&quot;</span> <span class="c">% (blueCup.color, blueCup.__class__.__name__)</span>
+</pre></div><p>There are <a href="../python-factorymethod.html#disqus_thread">comments</a>.</p>                </article>
+                            </aside><!-- /#featured -->
+                            <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+                                                
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-simplefactory.html" rel="bookmark"
+                           title="Permalink to python设计模式之简单工厂模式">python设计模式之简单工厂模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-17T00:00:00">
+                五 17 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>简单工厂模式</h2>
+<p>我将连续写三个工厂模式，个人理解，这里先说简单工厂模式
+Simple factory也就是<em>通过一个工厂类</em>的参数来决定产生的产品类, 也就是说从工厂的不同方法访问不同的需要被生产的类</p>
+<h2>python的例子</h2>
+<p>我这里搞了个例子</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Factory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">register</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">,</span> <span class="n">constructor</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        &quot;&quot;&quot;注册产品&quot;&quot;&quot;
+        <span class="n">_args</span> <span class="p">=</span> <span class="p">[</span><span class="n">constructor</span><span class="p">]</span>
+        <span class="n">_args</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        # 给类添加属性，值就是相应间接调用类的实例
+        <span class="n">setattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">,</span> <span class="n">apply</span><span class="p">(</span><span class="n">Functor</span><span class="p">,</span> <span class="n">_args</span><span class="p">,</span> <span class="n">kargs</span><span class="p">))</span>
+
+    <span class="n">def</span> <span class="n">unregister</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">):</span>
+        &quot;&quot;&quot;取消注册&quot;&quot;&quot;
+        <span class="n">delattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">)</span>
+
+<span class="n">class</span> <span class="n">Functor</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self ...</span></pre></div>
+                <a class="readmore" href="../python-simplefactory.html">read more</a>
+                <p>There are <a href="../python-simplefactory.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-singleton.html" rel="bookmark"
+                           title="Permalink to python设计模式之单例模式">python设计模式之单例模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-16T00:00:00">
+                四 16 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>单例模式</h2>
+<p>通过Singleton模式，全局保证只有一个实例，在python中怎么用呢？</p>
+<h2>python的例子</h2>
+<p>我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">ConnectionSingleton</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    &quot;&quot;&quot;<span class="n">Represents</span> <span class="n">a</span> <span class="n">MongoDB</span> <span class="n">connection</span>&quot;&quot;&quot;
+    <span class="n">conn</span><span class="p">=</span><span class="n">None</span>
+    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span> <span class="n">is</span> <span class="n">None</span><span class="p">:</span>
+            <span class="n">cls</span><span class="p">.</span><span class="n">conn</span><span class="p">=</span><span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span>
+</pre></div>
+
+
+<p>调用的时候可以</p>
+<div class="highlight"><pre><span class="n">db</span> <span class="p">=</span> <span class="n">ConnectionSingleton</span><span class="p">()</span>
+</pre></div>
+
+
+<h2>和pymongo相关的温馨提示</h2>
+<ol>
+<li>请不要使用pymongo.Connection，官网不推荐，并且有个问题，当你close它的实例，连接数并没有立刻减少</li>
+<li>做好数据库操作的类变量的封装，调用完毕要显式close/disconnect</li>
+</ol>
+                <a class="readmore" href="../python-singleton.html">read more</a>
+                <p>There are <a href="../python-singleton.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            </ol><!-- /#posts-list -->
+                            <p class="paginator">
+        Page 1 / 1
+    </p>
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
