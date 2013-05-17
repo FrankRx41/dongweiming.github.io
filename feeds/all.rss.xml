@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>小明明s Github</title><link>http://dongweiming.github.io/</link><description></description><atom:link href="http://dongweiming.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 16 May 2013 00:00:00 +0800</lastBuildDate><item><title>python设计模式之单例模式</title><link>http://dongweiming.github.io/python-singleton.html</link><description>&lt;h2&gt;单例模式&lt;/h2&gt;
+&lt;p&gt;通过Singleton模式，全局保证只有一个实例，在python中怎么用呢？&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;p&gt;我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;ConnectionSingleton&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &amp;quot;&amp;quot;&amp;quot;&lt;span class="n"&gt;Represents&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;MongoDB&lt;/span&gt; &lt;span class="n"&gt;connection&lt;/span&gt;&amp;quot;&amp;quot;&amp;quot;
+    &lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;None&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwds&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pymongo&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MongoClient&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;调用的时候可以&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ConnectionSingleton&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;和pymongo相关的温馨提示&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;请不要使用pymongo.Connection，官网不推荐，并且有个问题，当你close它的实例，连接数并没有立刻减少&lt;/li&gt;
+&lt;li&gt;做好数据库操作的类变量的封装，调用完毕要显式close/disconnect&lt;/li&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dong Weiming</dc:creator><pubDate>Thu, 16 May 2013 00:00:00 +0800</pubDate><guid>tag:dongweiming.github.io,2013-05-16:python-singleton.html</guid><category>Design Patterns</category></item></channel></rss>
