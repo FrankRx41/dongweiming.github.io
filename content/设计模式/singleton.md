@@ -15,7 +15,7 @@ python的例子
 我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数
 
     class ConnectionSingleton(object):
-        """Represents a MongoDB connection"""
+        '''通过重载实例化函数__new__缓存mongodb连接'''
         conn=None
         def __new__(cls,*args,**kwds):
             if cls.conn is None:
