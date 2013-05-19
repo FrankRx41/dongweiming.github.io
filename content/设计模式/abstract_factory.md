@@ -31,6 +31,7 @@ python的例子
 
 
 #这里帮助dog这个产品类找到应该的属性的工厂
+
     class DogFactory(object):
         def get_pet(self):
             return Dog();
