@@ -1,5 +1,585 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>小明明s Github</title><link>http://dongweiming.github.io/</link><description></description><atom:link href="http://dongweiming.github.io/feeds/she-ji-mo-shi.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 17 May 2013 00:00:00 +0800</lastBuildDate><item><title>python设计模式之工厂方法模式</title><link>http://dongweiming.github.io/python-factorymethod.html</link><description>&lt;h2&gt;工厂方法模式&lt;/h2&gt;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>小明明s Github</title><link>http://dongweiming.github.io/</link><description></description><atom:link href="http://dongweiming.github.io/feeds/she-ji-mo-shi.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 18 May 2013 00:00:00 +0800</lastBuildDate><item><title>python设计模式之抽象工厂模式</title><link>http://dongweiming.github.io/python-abstract-factory.html</link><description>&lt;h2&gt;抽象工厂模式&lt;/h2&gt;
+&lt;p&gt;和简单工厂/工厂方法不同，抽象工厂可能最好理解，举个例子: &lt;br /&gt;
+&lt;em&gt; 比如2个动物，猫和狗，他们都有speak和eat的function，但是很明显他们执行的结果是不同的
+&lt;/em&gt; 有个'工厂'(抽象工厂里面一个类型就是一个工厂,这点和其他模式的不同)专门帮助我们找到对应的动物做正确的操作
+&lt;em&gt; 有个类/函数可以通过参数帮助我们找到上面的这个工厂
+&lt;/em&gt; 这就是抽象工厂&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;abc&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ABCMeta&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;StandardFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;#39;&amp;#39;&amp;#39;这就是那个抽象工厂&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;staticmethod&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_factory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;factory&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="s"&gt;&amp;#39;&amp;#39;&amp;#39;根据参数找到对实际操作的工厂&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;factory&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;cat&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;CatFactory&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;factory&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;dog&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;DogFactory&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;TypeError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Unknown Factory.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;这里帮助dog这个产品类找到应该的属性的工厂&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;DogFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_pet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;Dog&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;CatFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    # 注意这个方法和上面的名字一样，但是返回的类不同，这就是工厂的作用
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_pet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+
+# 可以认为&lt;span class="n"&gt;dog&lt;/span&gt;和&lt;span class="nb"&gt;cat&lt;/span&gt;都是动物的一种，可以有个基类
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Pet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    # &lt;span class="n"&gt;ABCMeta&lt;/span&gt;会让这个类在注册后添加很多基础抽象基类，可以看&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ABCMeta&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;docs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;2&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;abc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt;#&lt;span class="n"&gt;abc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ABCMeta&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;__metaclass__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ABCMeta&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;pass&lt;/span&gt;
+
+
+# &lt;span class="n"&gt;Dog&lt;/span&gt;应该做什么就是这里
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Dog&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pet&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Dog food...&amp;#39;&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pet&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    # 这里的&lt;span class="n"&gt;eat&lt;/span&gt;依然是同名，她们都是同样的操作，只是返回不同
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Cat food...&amp;#39;&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;__main__&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;factory&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;StandardFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_factory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;cat&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;pet&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;factory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;pet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    # 注意这里，你只需要修改抽象工厂传入的那个参数，其他什么都不用改
+    &lt;span class="n"&gt;factory&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;StandardFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_factory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;dog&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;pet&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;factory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;pet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dong Weiming</dc:creator><pubDate>Sat, 18 May 2013 00:00:00 +0800</pubDate><guid>tag:dongweiming.github.io,2013-05-18:python-abstract-factory.html</guid><category>Design Patterns</category></item><item><title>python设计模式之命令调度模式</title><link>http://dongweiming.github.io/python-command.html</link><description>&lt;h2&gt;命令调度模式&lt;/h2&gt;
+&lt;p&gt;设想一个问题，假如你经常搞web框架，你知道GET/POST/PUT/DELETE，当你想确定使用那种方式工作你需要大概这样:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;command&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;get&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;command&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;put&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;抑或写一个字典作为调度的方式：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;dispatch_table&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;#39;get&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;#39;put&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;dispatch_table&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;has_key&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;func&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dispatch_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;其实呢？python已经自带了很多这样的功能的东西，Guido van Rossum把这个模式叫做Command Dispatch&lt;/p&gt;
+&lt;p&gt;喏  这就是,只是你没有意识到&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;greet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;who&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="c"&gt;%s&amp;quot; % who&lt;/span&gt;
+&lt;span class="n"&gt;greet_command&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;greet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&amp;quot;&lt;span class="n"&gt;World&lt;/span&gt;&amp;quot;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;greet_command&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;还有python自带的库&lt;a href="http://pymotw.com/2/cmd/index.html#module-cmd"&gt;cmd&lt;/a&gt;
+还是上面的例子&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Dispatcher&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;do_get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;do_put&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;dispatch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;mname&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;do_&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;command&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;hasattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mname&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;method&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;getattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;p&gt;我这里实现了一个封装pymongo的类，通过工厂方法模式执行insert/update/find操作，我这里只实现个效果&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;pymongo&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;MongoClient&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;MongoPack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt;
+
+    # 通过指定&lt;span class="n"&gt;kind&lt;/span&gt;标识操作的种类&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;find&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;operation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;coll&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;getattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="n"&gt;coll&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    # 当指定&lt;span class="n"&gt;kind&lt;/span&gt;为&lt;span class="s"&gt;&amp;#39;find&amp;#39;&lt;/span&gt;执行这个方法
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="nb"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;coll&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;coll&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nb"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+    &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MongoClient&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MongoPack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;operation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;find&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;1&lt;span class="p"&gt;)[&lt;/span&gt;0&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dong Weiming</dc:creator><pubDate>Sat, 18 May 2013 00:00:00 +0800</pubDate><guid>tag:dongweiming.github.io,2013-05-18:python-command.html</guid><category>Design Patterns</category></item><item><title>python设计模式之装饰器模式</title><link>http://dongweiming.github.io/python-decorator.html</link><description>&lt;h2&gt;装饰器模式&lt;/h2&gt;
+&lt;p&gt;在python中装饰器已经算是代码级别的模式了，装饰器这个@符号会深入你我心，而这个技能也是写代码必备之大技.增加额外的功能，装饰器其实就是在你执行类或者函数之前给你封装了一层或者多层(多个装饰器，这在web框架代码中很常见)操作，z但是不影响你最后执行代码
+其实原理就是：有一些函数或者类里面有一些步骤是一样的(比如对数据缓存，比如加锁和释放)，那么你就可以把这些重复的东西拿出来放在装饰器里面，这样每个函数或者类就不需要写这样多的代码，而抽象出来。而通过这样的额外功能可以还能让你执行的函数或者类计数等&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;p&gt;一时间还想不起来干啥，好吧写了个缓存数据到redis的装饰器&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;functools&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;wraps&lt;/span&gt;
+&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Redis&lt;/span&gt;
+&lt;span class="n"&gt;redis&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Redis&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;cached&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;5 &lt;span class="o"&gt;*&lt;/span&gt; 60&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;decorator&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        # &lt;span class="n"&gt;wraps&lt;/span&gt;帮你将函数原来的属性复制过来
+        &lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;wraps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;decorated_function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            # 以执行函数的参数为键
+            &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;rv&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            # 发现缓存过直接返回
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Has match: &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt;
+                &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt;
+            &lt;span class="n"&gt;rv&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;decorated_function&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;decorator&lt;/span&gt;
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;cached&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;printNumber&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    # 注意列表数据有重复
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nb"&gt;i&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 5&lt;span class="p"&gt;,&lt;/span&gt; 11&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 7&lt;span class="p"&gt;,&lt;/span&gt; 9&lt;span class="p"&gt;,&lt;/span&gt; 1&lt;span class="p"&gt;]:&lt;/span&gt;
+        &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;printNumber&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;说到装饰器就要提一个模块: &lt;a href="http://micheles.googlecode.com/hg/decorator/documentation.html"&gt;decorator&lt;/a&gt; 它是 Michele Simionato 为简化python的decorator的使用难度而开发的，强烈建议深入学习&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dong Weiming</dc:creator><pubDate>Sat, 18 May 2013 00:00:00 +0800</pubDate><guid>tag:dongweiming.github.io,2013-05-18:python-decorator.html</guid><category>Design Patterns</category></item><item><title>python设计模式之享元模式</title><link>http://dongweiming.github.io/python-flyweight.html</link><description>&lt;h2&gt;享元模式&lt;/h2&gt;
+&lt;p&gt;Flyweight模式，顾名思义，就是共享元数据，在python这个动态语言中可以提高程序性能和效率，比如从一个文件读取很多的字符串，而这些字符串必定重复，所以可以使用这个模式将其存在一个pool中&lt;/p&gt;
+&lt;h2&gt;python的例子(我将提出一系列的例子不同方式实现这个功能)&lt;/h2&gt;
+&lt;p&gt;普通青年版，看了Gof，可能就会有这样基础的一段代码:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;SpamFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt;  &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        # 在实例化后生成一个字典，当新的元祖对不存在就缓存起来
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+
+# 这个和上面的意思完全一样， 这是为了在最后断言下2个工厂缓存的数据是不是能共享
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;EggFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+
+&lt;span class="n"&gt;spamFactory&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SpamFactory&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;eggFactory&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;EggFactory&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;spamFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;spamFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;eggFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;eggFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+# &lt;span class="n"&gt;spamFactory&lt;/span&gt;存储的这个元祖和&lt;span class="n"&gt;eggFactory&lt;/span&gt;存储的不是一个东西
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;spamFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;eggFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;上面的是最简单能想到的，也是我见过用得最多的一种， 可是还有梦想青年版， 因为上面的东西是可以抽象出来的, 比如上面只能传入a,b2个，再多了就不行了，其他的风格也不行，比如我想缓存键值对，所以想起来了&lt;em&gt;args和&lt;/em&gt;*kwargs&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;FlyweightFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_cls&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    # 使用&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;这样的方式抽象实现的&lt;span class="n"&gt;cls&lt;/span&gt;的参数数量和类型
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        # 如果键在字典中，返回这个键所对应的值。如果键不在字典中，向字典 中插入这个键
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                                &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_cls&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    # 我这里实现的是3个参数，这个随意
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;
+
+
+&lt;span class="n"&gt;SpamFactory&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FlyweightFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;EggFactory&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FlyweightFactory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;SpamFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 3&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;SpamFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 3&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;EggFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;EggFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;SpamFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 3&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;EggFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;,&lt;/span&gt; 3&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;然后就是我最喜欢的风格，装饰器解决这个问题，算是老土的文艺青年吧&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 这个是装饰器，主要用来将操作工厂当参数传入，拦截操作工厂的调用&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;flyweight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_cls&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="c"&gt;# 重载括号操作符， 你想啊，加了装饰器就会调用，也就会触发__call__&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__call__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                                    &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_cls&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;flyweight&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;flyweight&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;但是我们实在态out了，首先，没必要把装饰器搞成一个类，完全可以使用函数式编程&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# instances是闭包，好懂吧&lt;/span&gt;
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;flyweight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                                            &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;flyweight&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;flyweight&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;该是刚进城的文艺小青版版了，这里用了一个东西&lt;a href="http://blog.csdn.net/lanphaday/article/details/1656969"&gt;Mixin&lt;/a&gt;: 给某个具体的类一些它需要的具体功能&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 这是Mixin类，它提供了get_instance， 谁需要这个方法谁继承，不需要不继承&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;FlyweightMixin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;_instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;classmethod&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt; 
+                                &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FlyweightMixin&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FlyweightMixin&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;唯一不爽的是调用方式：XX.get_instance(A， B)，不够高端&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;FlyweightMixin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;_instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        # 只想被继承不想被初始化
+        &lt;span class="n"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;NotImplementedException&lt;/span&gt;
+    # 重载实例化触发的&lt;span class="n"&gt;__new__&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                    &lt;span class="n"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FlyweightMixin&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FlyweightMixin&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;嗯， 这样就和以前一样好看了，可是 什么文艺青年？ 差得很远， 一个想成为文艺青年的炫技版:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;classmethod&lt;/span&gt;
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;_get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                                &lt;span class="n"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+# 其实绕了个圈子在操作工厂实例化的时候拦截执行上面的类方法
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;flyweight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;decoree&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;decoree&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;decoree&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_get_instance&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;decoree&lt;/span&gt;
+
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;flyweight&lt;/span&gt;
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;flyweight&lt;/span&gt;
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;无语的文艺，好吧，现在就大众经常看见的文艺青年(穿着文艺，其实骨子里不文艺)版&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 赋予创建类的控制权,也就是python的元类metaclass&lt;/span&gt;
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;MetaFlyweight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="c"&gt;# 当你实例化cls的时候，实例的结果其实是执行_get_instance方法&lt;/span&gt;
+        &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_get_instance&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;_get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                                    &lt;span class="n"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="c"&gt;# 提供你生成这个类的模板&lt;/span&gt;
+    &lt;span class="n"&gt;__metaclass__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MetaFlyweight&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;__metaclass__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MetaFlyweight&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这个当然也可以搞成类方法的风格，我只列出关键的代码&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;classmethod&lt;/span&gt;
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;_get_instance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;())),&lt;/span&gt;
+                                &lt;span class="n"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;metaflyweight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;parents&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;cls&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;parents&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_get_instance&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;好吧，终极的文艺青年版- 这是一个纯函数式使用元类的方法：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;metaflyweight&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;parents&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="n"&gt;parents&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;__instances&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()),&lt;/span&gt;
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;__new__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;classmethod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                &lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__instances&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setdefault&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                                &lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                                &lt;span class="n"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kargs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+                &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;__metaclass__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;metaflyweight&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;__metaclass__&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;metaflyweight&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;Spam&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;Egg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;1&lt;span class="p"&gt;,&lt;/span&gt; 2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;你到了那个境界呢？&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dong Weiming</dc:creator><pubDate>Sat, 18 May 2013 00:00:00 +0800</pubDate><guid>tag:dongweiming.github.io,2013-05-18:python-flyweight.html</guid><category>Design Patterns</category></item><item><title>python设计模式之策略模式</title><link>http://dongweiming.github.io/python-strategy.html</link><description>&lt;h2&gt;策略模式&lt;/h2&gt;
+&lt;p&gt;Strategy 模式和抽象工厂可能最难分辨，抽象工厂帮助我们根据我们的参数找到对应的操作工厂，而每个操作工厂提供了相同的接口函数
+操作工厂所以可能是从一个基类继承的不同实现，举个例子，有个鸭子的基类，然后有很多品种的鸭子是不同的操作工厂，本来根据抽象工厂会返回这个操作工厂来获得这个特定的鸭子的类型，比如一个fly的方法，问题出现了：
+有些鸭子会飞，有些不会飞。在实际中有Mixin的角度，但是我们经常能看见这样的实现：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    # 明确不能直接访问基类的这个方法，他们是具体类去实现
+    # &lt;span class="n"&gt;kind&lt;/span&gt; 标识能不能飞&lt;span class="p"&gt;,&lt;/span&gt; 可以设置&lt;span class="n"&gt;yes&lt;/span&gt;和&lt;span class="n"&gt;no&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;NotImplementedError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Exception raised, Duck is supposed to be an interface / abstract class!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Duck1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;selfi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Duck1 fly kind: &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Duck2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Duck2 fly kind: &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看到了吧，这种差异化的问题派生不是最好的办法，因为你不能因为某个个体的功能就去给基类添加这个功能，比如上面的fly，Duck2其实不需要有这个方法
+策略模式就是&lt;em&gt;分开这些易于变化的部分&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;python的例子&lt;/h2&gt;
+&lt;p&gt;还是上面的例子，上面的代码简单的继承了基类，我们可以写的更高端，并且显示调用的次数&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    # 上面使用继承，这里通用的使用参数方式，传入的就是操作工厂的类
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;strategy&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;action&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;None&lt;/span&gt;
+        &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; 0
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;strategy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            # 指定策略，那么执行&lt;span class="n"&gt;action&lt;/span&gt;就是用这个类的实例
+            &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;action&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;strategy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt; 1
+            # 这里的第二个参数&lt;span class="n"&gt;self&lt;/span&gt;，算是炫技吧，就是为了让操作的方法获得这里计算好的&lt;span class="n"&gt;count&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;UnboundLocalError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Exception raised, no strategyClass supplied to Duck!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+# 注意这里没有继承&lt;span class="n"&gt;Duck&lt;/span&gt;，因为是以参数的方式传入类名
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Duck1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Duck1 fly kind: &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;#&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Duck2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Duck2 fly kind: &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;kind&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;#&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;duckfly&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;duck1fly&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;strategy&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Duck1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;duck2fly&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Duck&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;strategy&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Duck2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;duckfly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;yes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;except&lt;/span&gt; &lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="n"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;print&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;exception&lt;/span&gt; &lt;span class="n"&gt;was&lt;/span&gt; &lt;span class="n"&gt;expected&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&amp;quot;
+        &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;
+
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;duck1fly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;yes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;duck1fly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;no&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;duck1fly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;yes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;duck2fly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;yes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;duck2fly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fly&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;no&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Dong Weiming</dc:creator><pubDate>Sat, 18 May 2013 00:00:00 +0800</pubDate><guid>tag:dongweiming.github.io,2013-05-18:python-strategy.html</guid><category>Design Patterns</category></item><item><title>python设计模式之工厂方法模式</title><link>http://dongweiming.github.io/python-factorymethod.html</link><description>&lt;h2&gt;工厂方法模式&lt;/h2&gt;
 &lt;p&gt;这是第二种'工厂'模式，Factorymethod和简单工厂的区别我想是：
 简单工厂是用工厂类的&lt;em&gt;不同&lt;/em&gt;方法返回不同产品类实例，
 工厂方法根据工厂类的一个方法的不同参数返回不同产品类实例, 但是这些产品类一般都有共同的父类&lt;/p&gt;
@@ -118,7 +698,7 @@ Simple factory也就是&lt;em&gt;通过一个工厂类&lt;/em&gt;的参数来决
 &lt;h2&gt;python的例子&lt;/h2&gt;
 &lt;p&gt;我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;ConnectionSingleton&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &amp;quot;&amp;quot;&amp;quot;&lt;span class="n"&gt;Represents&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;MongoDB&lt;/span&gt; &lt;span class="n"&gt;connection&lt;/span&gt;&amp;quot;&amp;quot;&amp;quot;
+    &lt;span class="s"&gt;&amp;#39;&amp;#39;&amp;#39;通过重载实例化函数__new__缓存mongodb连接&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
     &lt;span class="n"&gt;conn&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;None&lt;/span&gt;
     &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;__new__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwds&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;

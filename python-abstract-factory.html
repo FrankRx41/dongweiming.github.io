@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之抽象工厂模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-abstract-factory.html" rel="bookmark"
+           title="Permalink to python设计模式之抽象工厂模式">python设计模式之抽象工厂模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-18T00:00:00">
+                六 18 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>抽象工厂模式</h2>
+<p>和简单工厂/工厂方法不同，抽象工厂可能最好理解，举个例子: <br />
+<em> 比如2个动物，猫和狗，他们都有speak和eat的function，但是很明显他们执行的结果是不同的
+</em> 有个'工厂'(抽象工厂里面一个类型就是一个工厂,这点和其他模式的不同)专门帮助我们找到对应的动物做正确的操作
+<em> 有个类/函数可以通过参数帮助我们找到上面的这个工厂
+</em> 这就是抽象工厂</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">from</span> <span class="n">abc</span> <span class="n">import</span> <span class="n">ABCMeta</span>
+
+<span class="n">class</span> <span class="n">StandardFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="s">&#39;&#39;&#39;这就是那个抽象工厂&#39;&#39;&#39;</span>
+    <span class="p">@</span><span class="n">staticmethod</span>
+    <span class="n">def</span> <span class="n">get_factory</span><span class="p">(</span><span class="n">factory</span><span class="p">):</span>
+        <span class="s">&#39;&#39;&#39;根据参数找到对实际操作的工厂&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">factory</span> <span class="o">==</span> <span class="s">&#39;cat&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CatFactory</span><span class="p">()</span>
+        <span class="n">elif</span> <span class="n">factory</span> <span class="o">==</span> <span class="s">&#39;dog&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DogFactory</span><span class="p">()</span>
+        <span class="n">raise</span> <span class="n">TypeError</span><span class="p">(</span><span class="s">&#39;Unknown Factory.&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h1>这里帮助dog这个产品类找到应该的属性的工厂</h1>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">DogFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">get_pet</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Dog</span><span class="p">();</span>
+
+
+<span class="n">class</span> <span class="n">CatFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    # 注意这个方法和上面的名字一样，但是返回的类不同，这就是工厂的作用
+    <span class="n">def</span> <span class="n">get_pet</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cat</span><span class="p">();</span>
+
+
+# 可以认为<span class="n">dog</span>和<span class="nb">cat</span>都是动物的一种，可以有个基类
+<span class="n">class</span> <span class="n">Pet</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    # <span class="n">ABCMeta</span>会让这个类在注册后添加很多基础抽象基类，可以看<span class="p">[</span><span class="n">ABCMeta</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="p">.</span><span class="n">python</span><span class="p">.</span><span class="n">org</span><span class="o">/</span>2<span class="o">/</span><span class="n">library</span><span class="o">/</span><span class="n">abc</span><span class="p">.</span><span class="n">html</span>#<span class="n">abc</span><span class="p">.</span><span class="n">ABCMeta</span><span class="p">)</span>
+    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">ABCMeta</span>
+    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">pass</span>
+
+
+# <span class="n">Dog</span>应该做什么就是这里
+<span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">Pet</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Dog food...&#39;</span>
+
+
+<span class="n">class</span> <span class="n">Cat</span><span class="p">(</span><span class="n">Pet</span><span class="p">):</span>
+    # 这里的<span class="n">eat</span>依然是同名，她们都是同样的操作，只是返回不同
+    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Cat food...&#39;</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span>&quot;<span class="n">__main__</span>&quot;<span class="p">:</span>
+    <span class="n">factory</span> <span class="p">=</span> <span class="n">StandardFactory</span><span class="p">.</span><span class="n">get_factory</span><span class="p">(</span><span class="s">&#39;cat&#39;</span><span class="p">)</span>
+    <span class="n">pet</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">get_pet</span><span class="p">()</span>
+    <span class="n">print</span> <span class="n">pet</span><span class="p">.</span><span class="n">eat</span><span class="p">()</span>
+
+    # 注意这里，你只需要修改抽象工厂传入的那个参数，其他什么都不用改
+    <span class="n">factory</span> <span class="p">=</span> <span class="n">StandardFactory</span><span class="p">.</span><span class="n">get_factory</span><span class="p">(</span><span class="s">&#39;dog&#39;</span><span class="p">)</span>
+    <span class="n">pet</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">get_pet</span><span class="p">()</span>
+    <span class="n">print</span> <span class="n">pet</span><span class="p">.</span><span class="n">eat</span><span class="p">()</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+        <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "python-abstract-factory.html";
+        var disqus_url = "./python-abstract-factory.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://sgithub.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

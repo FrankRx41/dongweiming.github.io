@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之享元模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-flyweight.html" rel="bookmark"
+           title="Permalink to python设计模式之享元模式">python设计模式之享元模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-18T00:00:00">
+                六 18 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>享元模式</h2>
+<p>Flyweight模式，顾名思义，就是共享元数据，在python这个动态语言中可以提高程序性能和效率，比如从一个文件读取很多的字符串，而这些字符串必定重复，所以可以使用这个模式将其存在一个pool中</p>
+<h2>python的例子(我将提出一系列的例子不同方式实现这个功能)</h2>
+<p>普通青年版，看了Gof，可能就会有这样基础的一段代码:</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+<span class="n">class</span> <span class="n">SpamFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span>  <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+
+    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        # 在实例化后生成一个字典，当新的元祖对不存在就缓存起来
+        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="n">not</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">__instances</span><span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)]</span> <span class="p">=</span> <span class="n">Spam</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances</span><span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)]</span>
+
+# 这个和上面的意思完全一样， 这是为了在最后断言下2个工厂缓存的数据是不是能共享
+<span class="n">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+<span class="n">class</span> <span class="n">EggFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+
+    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="n">not</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">__instances</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span> <span class="p">=</span> <span class="n">Egg</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span>
+
+<span class="n">spamFactory</span> <span class="p">=</span> <span class="n">SpamFactory</span><span class="p">()</span>
+<span class="n">eggFactory</span> <span class="p">=</span> <span class="n">EggFactory</span><span class="p">()</span>
+
+<span class="n">assert</span> <span class="n">spamFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">spamFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="n">assert</span> <span class="n">eggFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">eggFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+# <span class="n">spamFactory</span>存储的这个元祖和<span class="n">eggFactory</span>存储的不是一个东西
+<span class="n">assert</span> <span class="n">spamFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">not</span> <span class="n">eggFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>上面的是最简单能想到的，也是我见过用得最多的一种， 可是还有梦想青年版， 因为上面的东西是可以抽象出来的, 比如上面只能传入a,b2个，再多了就不行了，其他的风格也不行，比如我想缓存键值对，所以想起来了<em>args和</em>*kwargs</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">FlyweightFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_cls</span> <span class="p">=</span> <span class="n">cls</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+    # 使用<span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span>这样的方式抽象实现的<span class="n">cls</span>的参数数量和类型
+    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        # 如果键在字典中，返回这个键所对应的值。如果键不在字典中，向字典 中插入这个键
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                                <span class="n">self</span><span class="p">.</span><span class="n">_cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+
+<span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    # 我这里实现的是3个参数，这个随意
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">c</span> <span class="p">=</span> <span class="n">c</span>
+
+<span class="n">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">z</span> <span class="p">=</span> <span class="n">z</span>
+
+
+<span class="n">SpamFactory</span> <span class="p">=</span> <span class="n">FlyweightFactory</span><span class="p">(</span><span class="n">Spam</span><span class="p">)</span>
+<span class="n">EggFactory</span> <span class="p">=</span> <span class="n">FlyweightFactory</span><span class="p">(</span><span class="n">Egg</span><span class="p">)</span>
+
+<span class="n">assert</span> <span class="n">SpamFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">,</span> 3<span class="p">)</span> <span class="n">is</span> <span class="n">SpamFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">,</span> 3<span class="p">)</span>
+<span class="n">assert</span> <span class="n">EggFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">EggFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">)</span>
+<span class="n">assert</span> <span class="n">SpamFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">,</span> 3<span class="p">)</span> <span class="n">is</span> <span class="n">not</span> <span class="n">EggFactory</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">,</span> 3<span class="p">)</span>
+</pre></div>
+
+
+<p>然后就是我最喜欢的风格，装饰器解决这个问题，算是老土的文艺青年吧</p>
+<div class="highlight"><pre><span class="c"># 这个是装饰器，主要用来将操作工厂当参数传入，拦截操作工厂的调用</span>
+<span class="nb">class</span> <span class="n">flyweight</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_cls</span> <span class="p">=</span> <span class="n">cls</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+    <span class="c"># 重载括号操作符， 你想啊，加了装饰器就会调用，也就会触发__call__</span>
+    <span class="n">def</span> <span class="n">__call__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                    <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                                    <span class="n">self</span><span class="p">.</span><span class="n">_cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+
+<span class="p">@</span><span class="n">flyweight</span>
+<span class="nb">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="p">@</span><span class="n">flyweight</span>
+<span class="nb">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="nb">not</span> <span class="n">Egg</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>但是我们实在态out了，首先，没必要把装饰器搞成一个类，完全可以使用函数式编程</p>
+<div class="highlight"><pre><span class="c"># instances是闭包，好懂吧</span>
+<span class="n">def</span> <span class="n">flyweight</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+    <span class="n">instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">:</span> <span class="n">instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                            <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                                            <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+
+<span class="p">@</span><span class="n">flyweight</span>
+<span class="nb">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="p">@</span><span class="n">flyweight</span>
+<span class="nb">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="nb">not</span> <span class="n">Egg</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>该是刚进城的文艺小青版版了，这里用了一个东西<a href="http://blog.csdn.net/lanphaday/article/details/1656969">Mixin</a>: 给某个具体的类一些它需要的具体功能</p>
+<div class="highlight"><pre><span class="c"># 这是Mixin类，它提供了get_instance， 谁需要这个方法谁继承，不需要不继承</span>
+<span class="nb">class</span> <span class="n">FlyweightMixin</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">_instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+
+    <span class="p">@</span><span class="n">classmethod</span>
+    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">_instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                <span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span> 
+                                <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+
+<span class="nb">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">FlyweightMixin</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="nb">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">FlyweightMixin</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Egg</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="nb">not</span> <span class="n">Egg</span><span class="p">.</span><span class="n">get_instance</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>唯一不爽的是调用方式：XX.get_instance(A， B)，不够高端</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">FlyweightMixin</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">_instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        # 只想被继承不想被初始化
+        <span class="n">raise</span> <span class="n">NotImplementedException</span>
+    # 重载实例化触发的<span class="n">__new__</span>
+    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">_instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                    <span class="n">super</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">cls</span><span class="p">),</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+
+<span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">FlyweightMixin</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="n">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">FlyweightMixin</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="n">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="n">assert</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">not</span> <span class="n">Egg</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>嗯， 这样就和以前一样好看了，可是 什么文艺青年？ 差得很远， 一个想成为文艺青年的炫技版:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="n">classmethod</span>
+<span class="n">def</span> <span class="n">_get_instance</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">__instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                                <span class="n">super</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">cls</span><span class="p">),</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+# 其实绕了个圈子在操作工厂实例化的时候拦截执行上面的类方法
+<span class="n">def</span> <span class="n">flyweight</span><span class="p">(</span><span class="n">decoree</span><span class="p">):</span>
+    <span class="n">decoree</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+    <span class="n">decoree</span><span class="p">.</span><span class="n">__new__</span> <span class="p">=</span> <span class="n">_get_instance</span>
+    <span class="k">return</span> <span class="n">decoree</span>
+
+
+<span class="p">@</span><span class="n">flyweight</span>
+<span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="p">@</span><span class="n">flyweight</span>
+<span class="n">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="n">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="n">assert</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">not</span> <span class="n">Egg</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>无语的文艺，好吧，现在就大众经常看见的文艺青年(穿着文艺，其实骨子里不文艺)版</p>
+<div class="highlight"><pre><span class="c"># 赋予创建类的控制权,也就是python的元类metaclass</span>
+<span class="nb">class</span> <span class="n">MetaFlyweight</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="nb">type</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">)</span>
+        <span class="n">cls</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+        <span class="c"># 当你实例化cls的时候，实例的结果其实是执行_get_instance方法</span>
+        <span class="n">cls</span><span class="p">.</span><span class="n">__new__</span> <span class="p">=</span> <span class="n">cls</span><span class="p">.</span><span class="n">_get_instance</span>
+
+    <span class="n">def</span> <span class="n">_get_instance</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">__instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                    <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                                    <span class="n">super</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+
+<span class="nb">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="c"># 提供你生成这个类的模板</span>
+    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">MetaFlyweight</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="nb">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">MetaFlyweight</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="nb">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="nb">not</span> <span class="n">Egg</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>这个当然也可以搞成类方法的风格，我只列出关键的代码</p>
+<div class="highlight"><pre><span class="p">@</span><span class="n">classmethod</span>
+<span class="n">def</span> <span class="n">_get_instance</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">__instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">tuple</span><span class="p">(</span><span class="n">kargs</span><span class="p">.</span><span class="n">items</span><span class="p">())),</span>
+                                <span class="n">super</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">cls</span><span class="p">),</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+
+<span class="n">def</span> <span class="n">metaflyweight</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+    <span class="n">cls</span> <span class="p">=</span> <span class="n">type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+    <span class="n">cls</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+    <span class="n">cls</span><span class="p">.</span><span class="n">__new__</span> <span class="p">=</span> <span class="n">_get_instance</span>
+    <span class="k">return</span> <span class="n">cls</span>
+</pre></div>
+
+
+<p>好吧，终极的文艺青年版- 这是一个纯函数式使用元类的方法：</p>
+<div class="highlight"><pre><span class="n">metaflyweight</span> <span class="p">=</span> <span class="n">lambda</span> <span class="n">name</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="n">type</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">parents</span><span class="p">,</span>
+        <span class="n">dict</span><span class="p">(</span><span class="n">attrs</span><span class="p">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;__instances&#39;</span><span class="p">,</span> <span class="n">dict</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;__new__&#39;</span><span class="p">,</span> <span class="n">classmethod</span><span class="p">(</span>
+                <span class="n">lambda</span> <span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">:</span> <span class="n">cls</span><span class="p">.</span><span class="n">__instances</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span>
+                                <span class="n">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+                                <span class="n">super</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">cls</span><span class="p">),</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">])</span>
+    <span class="p">)</span>
+
+
+<span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">metaflyweight</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+
+<span class="n">class</span> <span class="n">Egg</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">metaflyweight</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="n">x</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">y</span>
+
+
+<span class="n">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+<span class="n">assert</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span> <span class="n">is</span> <span class="n">Egg</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">assert</span> <span class="n">Spam</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span> <span class="n">is</span> <span class="n">not</span> <span class="n">Egg</span><span class="p">(</span>1<span class="p">,</span> 2<span class="p">)</span>
+</pre></div>
+
+
+<p>你到了那个境界呢？</p>
+    </div><!-- /.entry-content -->
+        <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "python-flyweight.html";
+        var disqus_url = "./python-flyweight.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://sgithub.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

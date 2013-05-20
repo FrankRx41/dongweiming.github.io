@@ -46,7 +46,7 @@
 <h2>python的例子</h2>
 <p>我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数</p>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">ConnectionSingleton</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    &quot;&quot;&quot;<span class="n">Represents</span> <span class="n">a</span> <span class="n">MongoDB</span> <span class="n">connection</span>&quot;&quot;&quot;
+    <span class="s">&#39;&#39;&#39;通过重载实例化函数__new__缓存mongodb连接&#39;&#39;&#39;</span>
     <span class="n">conn</span><span class="p">=</span><span class="n">None</span>
     <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span> <span class="n">is</span> <span class="n">None</span><span class="p">:</span>
