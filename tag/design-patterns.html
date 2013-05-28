@@ -27,8 +27,175 @@
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../python-abstract-factory.html">python设计模式之抽象工厂模式</a></h1> 
+                    <h1 class="entry-title"><a href="../python-adapter.html">python设计模式之Adapter模式</a></h1> 
                     <footer class="post-info">
+        <abbr class="published" title="2013-05-27T00:00:00">
+                一 27 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info --><h2>适应模式</h2>
+<p>Adapter模式是一个很实用的模式，比如在<a href="http://grok.zope.org/doc/current/grok_overview.html#adapters">zope</a>中。
+以前说了抽象工厂模式，你会发现每个产品类的接口方法名都是一样的，比如eat，他们都要吃。这个Adapter模式的区别呢？
+各个产品类的操作不尽相同，但是怎么样兼容这些不一样的方法呢？举个能想到的例子，我们渐进的来理解</p>
+<h2>想要通过不同的动物返回他们的声音和类型</h2>
+<p>我想很多人会这么写</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+    <span class="n">def</span> <span class="n">bark</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="n">wangwang</span>&quot;
+
+<span class="n">def</span> <span class="n">Animal</span><span class="p">(</span><span class="n">animal</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">animal</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">animal</span><span class="p">.</span><span class="n">bark</span><span class="p">()</span>
+</pre></div>
+
+
+<p>但要是有很类型的动物，其它动物可不会bark(吠), 所以上面的bark这个方法名字就很不好，因为不够通用
+，好吧 我们换个名字make_noise, 这个时候Cat类出现，Adapter模式也第一次出现，为了兼容Dog</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Animal</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="s">&#39;&#39;&#39;动物类的基类&#39;&#39;&#39;</span>
+    # 基类不需要实现<span class="n">make_noise</span>
+    <span class="n">def</span> <span class="n">make_noise</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplementedError</span>
+
+<span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+
+    <span class="n">def</span> <span class="n">make_noise</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> “<span class="n">wangwang</span>”
+
+# 这里的适应， 也继承了<span class="n">Dog</span>类
+<span class="n">class</span> <span class="n">CatClassAdapter</span><span class="p">(</span><span class="n">Animal</span><span class="p">,</span> <span class="n">Dog</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">Dog</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">miaow</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;miaomiao&#39;</span>
+
+    <span class="n">def</span> <span class="n">make_noise</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">miaow</span><span class="p">()</span>
+</pre></div>
+
+
+<p>这样它们为了兼容都是通过make_noise方法返回不同的相应方法，很多人会问cat类为啥不直接
+把这个方法叫做make_noise？其实这个只是个例子，实际工作中很多存在这样的不兼容的代码，
+而现在接口一致了，但是新加一个动物就要这么搞一段代码...,而且奇怪的是它们都要继承Dog类，好吧 
+我们抽象上面的成这样：</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">CatObjectAdapter</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="nb">cat</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="nb">cat</span> <span class="p">=</span> <span class="nb">cat</span>
+
+    <span class="n">def</span> <span class="n">make_noise</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nb">cat</span><span class="p">.</span><span class="n">miaow</span><span class="p">()</span>
+
+    # 属性委派，拦截属性调用
+    <span class="n">def</span> <span class="n">__getattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nb">cat</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+</pre></div>
+
+
+<p>这样好一点了，但是make_noise还是不灵活，它只能用来处理cat，其实想想也没必要从Animal)继承。
+继续抽象：</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">AnimalAdapter</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    # 这次把<span class="n">make_noise</span>的规则也传进来
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">animal</span><span class="p">,</span> <span class="n">make_noise</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">animal</span> <span class="p">=</span> <span class="n">animal</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">make_noise</span> <span class="p">=</span> <span class="n">make_noise</span>
+    # 继续委派属性
+    <span class="n">def</span> <span class="n">__getattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">animal</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+</pre></div>
+
+
+<p>集合起上面的东西 然后这样使用：</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+    <span class="n">def</span> <span class="n">bark</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="n">wangwang</span>&quot;
+
+<span class="n">class</span> <span class="n">Cat</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+    <span class="n">def</span> <span class="n">meow</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="n">meow</span>&quot;
+
+<span class="n">class</span> <span class="n">AnimalAdapter</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">animal</span><span class="p">,</span> <span class="n">make_noise</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">animal</span> <span class="p">=</span> <span class="n">animal</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">make_noise</span> <span class="p">=</span> <span class="n">make_noise</span>
+
+    <span class="n">def</span> <span class="n">__getattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">animal</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">fido</span> <span class="p">=</span> <span class="n">Dog</span><span class="p">(</span>&quot;<span class="n">Fido</span>&quot;<span class="p">)</span>
+    # 都是这个适应类帮助你转换，怎么转换是你设计好的，他只是个模式
+    <span class="n">canine</span> <span class="p">=</span> <span class="n">AnimalAdapter</span><span class="p">(</span><span class="n">fido</span><span class="p">,</span> <span class="n">fido</span><span class="p">.</span><span class="n">bark</span><span class="p">)</span>
+    <span class="n">whiskers</span> <span class="p">=</span> <span class="n">Cat</span><span class="p">(</span>&quot;<span class="n">Whiskers</span>&quot;<span class="p">)</span>
+    <span class="n">feline</span> <span class="p">=</span> <span class="n">AnimalAdapter</span><span class="p">(</span><span class="n">whiskers</span><span class="p">,</span> <span class="n">whiskers</span><span class="p">.</span><span class="n">meow</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">(</span><span class="n">canine</span><span class="p">,</span> <span class="n">feline</span><span class="p">):</span>
+        <span class="n">print</span> <span class="nb">i</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;says:&#39;</span><span class="p">,</span> <span class="nb">i</span><span class="p">.</span><span class="n">make_noise</span><span class="p">()</span>
+</pre></div>
+
+
+<p>而用抽象工厂模式，大概可以这样:</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">CatNoise</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+<span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">context</span> <span class="p">=</span> <span class="n">context</span>
+<span class="n">def</span> <span class="n">make_noise</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">meow</span><span class="p">()</span>
+<span class="n">class</span> <span class="n">DogNoise</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">context</span> <span class="p">=</span> <span class="n">context</span>
+    <span class="n">def</span> <span class="n">make_noise</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">bark</span><span class="p">()</span>
+<span class="n">def</span> <span class="n">noise_adapter</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">Cat</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CatNoise</span><span class="p">(</span><span class="n">context</span><span class="p">)</span> 
+    <span class="n">elif</span> <span class="n">isinstance</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">Dog</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DogNoise</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">raise</span> <span class="n">AdapterLookupError</span><span class="p">(</span>&quot;<span class="n">Could</span> <span class="n">not</span> <span class="nb">find</span> <span class="n">adapter</span>&quot;<span class="p">)</span>
+</pre></div>
+
+
+<p>发现了嘛？新增的动物类都要放在判断里面，就没有这种模式感觉舒服了</p>
+<p>然后再写的高端一点:</p>
+<div class="highlight"><pre><span class="n">noise_adapter_lookup</span> <span class="p">=</span> <span class="p">{</span><span class="n">Cat</span><span class="p">:</span> <span class="n">CatNoise</span><span class="p">,</span> <span class="n">Dog</span><span class="p">:</span> <span class="n">DogNoise</span><span class="p">}</span>
+
+<span class="n">def</span> <span class="n">noise_adapter</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">noise_adapter_lookup</span><span class="p">[</span><span class="n">context</span><span class="p">.</span><span class="n">__class__</span><span class="p">](</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">except</span> <span class="n">KeyError</span><span class="p">:</span>
+        <span class="n">raise</span> <span class="n">AdapterLookupError</span>
+</pre></div>
+
+
+<p>至于感觉怎样，需要你自己评价了</p><p>There are <a href="../python-adapter.html#disqus_thread">comments</a>.</p>                </article>
+                            </aside><!-- /#featured -->
+                            <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+                                                
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-abstract-factory.html" rel="bookmark"
+                           title="Permalink to python设计模式之抽象工厂模式">python设计模式之抽象工厂模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
         <abbr class="published" title="2013-05-18T00:00:00">
                 六 18 五月 2013
         </abbr>
@@ -38,7 +205,7 @@
         </address>
         <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
 <p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info --><h2>抽象工厂模式</h2>
+</footer><!-- /.post-info -->                <h2>抽象工厂模式</h2>
 <p>和简单工厂/工厂方法不同，抽象工厂可能最好理解，举个例子: <br />
 <em> 比如2个动物，猫和狗，他们都有speak和eat的function，但是很明显他们执行的结果是不同的
 </em> 有个'工厂'(抽象工厂里面一个类型就是一个工厂,这点和其他模式的不同)专门帮助我们找到对应的动物做正确的操作
@@ -62,52 +229,11 @@
 
 <h1>这里帮助dog这个产品类找到应该的属性的工厂</h1>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">DogFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">get_pet</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Dog</span><span class="p">();</span>
-
-
-<span class="n">class</span> <span class="n">CatFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    # 注意这个方法和上面的名字一样，但是返回的类不同，这就是工厂的作用
-    <span class="n">def</span> <span class="n">get_pet</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Cat</span><span class="p">();</span>
-
-
-# 可以认为<span class="n">dog</span>和<span class="nb">cat</span>都是动物的一种，可以有个基类
-<span class="n">class</span> <span class="n">Pet</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    # <span class="n">ABCMeta</span>会让这个类在注册后添加很多基础抽象基类，可以看<span class="p">[</span><span class="n">ABCMeta</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="p">.</span><span class="n">python</span><span class="p">.</span><span class="n">org</span><span class="o">/</span>2<span class="o">/</span><span class="n">library</span><span class="o">/</span><span class="n">abc</span><span class="p">.</span><span class="n">html</span>#<span class="n">abc</span><span class="p">.</span><span class="n">ABCMeta</span><span class="p">)</span>
-    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">ABCMeta</span>
-    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">pass</span>
-
-
-# <span class="n">Dog</span>应该做什么就是这里
-<span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">Pet</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Dog food...&#39;</span>
-
-
-<span class="n">class</span> <span class="n">Cat</span><span class="p">(</span><span class="n">Pet</span><span class="p">):</span>
-    # 这里的<span class="n">eat</span>依然是同名，她们都是同样的操作，只是返回不同
-    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Cat food...&#39;</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span>&quot;<span class="n">__main__</span>&quot;<span class="p">:</span>
-    <span class="n">factory</span> <span class="p">=</span> <span class="n">StandardFactory</span><span class="p">.</span><span class="n">get_factory</span><span class="p">(</span><span class="s">&#39;cat&#39;</span><span class="p">)</span>
-    <span class="n">pet</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">get_pet</span><span class="p">()</span>
-    <span class="n">print</span> <span class="n">pet</span><span class="p">.</span><span class="n">eat</span><span class="p">()</span>
-
-    # 注意这里，你只需要修改抽象工厂传入的那个参数，其他什么都不用改
-    <span class="n">factory</span> <span class="p">=</span> <span class="n">StandardFactory</span><span class="p">.</span><span class="n">get_factory</span><span class="p">(</span><span class="s">&#39;dog&#39;</span><span class="p">)</span>
-    <span class="n">pet</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">get_pet</span><span class="p">()</span>
-    <span class="n">print</span> <span class="n">pet</span><span class="p">.</span><span class="n">eat</span><span class="p">()</span>
-</pre></div><p>There are <a href="../python-abstract-factory.html#disqus_thread">comments</a>.</p>                </article>
-                            </aside><!-- /#featured -->
-                            <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-                                                
+    <span class="n">def ...</span></pre></div>
+                <a class="readmore" href="../python-abstract-factory.html">read more</a>
+                <p>There are <a href="../python-abstract-factory.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
 
                  
                         <li><article class="hentry">    
@@ -198,48 +324,9 @@
                 <a class="readmore" href="../python-decorator.html">read more</a>
                 <p>There are <a href="../python-decorator.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../python-flyweight.html" rel="bookmark"
-                           title="Permalink to python设计模式之享元模式">python设计模式之享元模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-18T00:00:00">
-                六 18 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>享元模式</h2>
-<p>Flyweight模式，顾名思义，就是共享元数据，在python这个动态语言中可以提高程序性能和效率，比如从一个文件读取很多的字符串，而这些字符串必定重复，所以可以使用这个模式将其存在一个pool中</p>
-<h2>python的例子(我将提出一系列的例子不同方式实现这个功能)</h2>
-<p>普通青年版，看了Gof，可能就会有这样基础的一段代码:</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
-
-<span class="n">class</span> <span class="n">SpamFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span>  <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
-
-    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        # 在实例化后生成一个字典，当新的元祖对不存在就缓存起来
-        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="n">not</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances ...</span></pre></div>
-                <a class="readmore" href="../python-flyweight.html">read more</a>
-                <p>There are <a href="../python-flyweight.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">
-        Page 1 / 2
+        Page 1 / 3
             <a href="../tag/design-patterns2.html">&raquo;</a>
     </p>
                         </section><!-- /#content -->

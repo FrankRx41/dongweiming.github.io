@@ -30,6 +30,45 @@
                     <ol id="posts-list" class="hfeed" start="3">
                         <li><article class="hentry">    
                 <header>
+                    <h1><a href="./python-flyweight.html" rel="bookmark"
+                           title="Permalink to python设计模式之享元模式">python设计模式之享元模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-18T00:00:00">
+                六 18 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>享元模式</h2>
+<p>Flyweight模式，顾名思义，就是共享元数据，在python这个动态语言中可以提高程序性能和效率，比如从一个文件读取很多的字符串，而这些字符串必定重复，所以可以使用这个模式将其存在一个pool中</p>
+<h2>python的例子(我将提出一系列的例子不同方式实现这个功能)</h2>
+<p>普通青年版，看了Gof，可能就会有这样基础的一段代码:</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+
+<span class="n">class</span> <span class="n">SpamFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span>  <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+
+    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        # 在实例化后生成一个字典，当新的元祖对不存在就缓存起来
+        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="n">not</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances ...</span></pre></div>
+                <a class="readmore" href="./python-flyweight.html">read more</a>
+                <p>There are <a href="./python-flyweight.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
                     <h1><a href="./python-strategy.html" rel="bookmark"
                            title="Permalink to python设计模式之策略模式">python设计模式之策略模式</a></h1>
                 </header>
@@ -65,103 +104,8 @@
                  
                         <li><article class="hentry">    
                 <header>
-                    <h1><a href="./python-factorymethod.html" rel="bookmark"
-                           title="Permalink to python设计模式之工厂方法模式">python设计模式之工厂方法模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-17T00:00:00">
-                五 17 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>工厂方法模式</h2>
-<p>这是第二种'工厂'模式，Factorymethod和简单工厂的区别我想是：
-简单工厂是用工厂类的<em>不同</em>方法返回不同产品类实例，
-工厂方法根据工厂类的一个方法的不同参数返回不同产品类实例, 但是这些产品类一般都有共同的父类</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Cup</span><span class="p">:</span>
-    <span class="n">color</span> <span class="p">=</span> &quot;&quot;
-
-    # 这里我用类方法实现工厂方法 
-    <span class="p">@</span><span class="n">staticmethod</span>
-    <span class="n">def</span> <span class="n">getCup</span><span class="p">(</span><span class="n">cupColor</span><span class="p">):</span>   
-        <span class="k">if</span> <span class="p">(</span><span class="n">cupColor</span> <span class="o">==</span> &quot;<span class="n">red</span>&quot;<span class="p">):</span>
-            <span class="k">return</span> <span class="n">RedCup</span><span class="p">()</span>
-        <span class="n">elif</span> <span class="p">(</span><span class="n">cupColor</span> <span class="o">==</span> &quot;<span class="n">blue</span>&quot;<span class="p">):</span>
-            <span class="k">return</span> <span class="n">BlueCup</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">None</span>
-
-<span class="n">class</span> <span class="n">RedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">):</span>
-    <span class="n">color</span> <span class="p">=</span> &quot;<span class="n">red</span>&quot;
-
-<span class="n">class</span> <span class="n">BlueCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">):</span>
-    <span class="n">color</span> <span class="p">=</span> &quot;<span class="n">blue</span>&quot;
-</pre></div>
-
-
-<p>这样测试一下吧</p>
-<div class="highlight"><pre><span class="c"># 给这个共用的方法传入参数&#39;red&#39;</span>
-<span class="n">redCup</span> <span class="p">=</span> <span class="n">Cup</span><span class="p">.</span><span class="n">getCup</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
-<span class="c"># 这里返回RedCup类的实例 ...</span></pre></div>
-                <a class="readmore" href="./python-factorymethod.html">read more</a>
-                <p>There are <a href="./python-factorymethod.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-simplefactory.html" rel="bookmark"
-                           title="Permalink to python设计模式之简单工厂模式">python设计模式之简单工厂模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-17T00:00:00">
-                五 17 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>简单工厂模式</h2>
-<p>我将连续写三个工厂模式，个人理解，这里先说简单工厂模式
-Simple factory也就是<em>通过一个工厂类</em>的参数来决定产生的产品类, 也就是说从工厂的不同方法访问不同的需要被生产的类</p>
-<h2>python的例子</h2>
-<p>我这里搞了个例子</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Factory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">register</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">,</span> <span class="n">constructor</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
-        &quot;&quot;&quot;注册产品&quot;&quot;&quot;
-        <span class="n">_args</span> <span class="p">=</span> <span class="p">[</span><span class="n">constructor</span><span class="p">]</span>
-        <span class="n">_args</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-        # 给类添加属性，值就是相应间接调用类的实例
-        <span class="n">setattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">,</span> <span class="n">apply</span><span class="p">(</span><span class="n">Functor</span><span class="p">,</span> <span class="n">_args</span><span class="p">,</span> <span class="n">kargs</span><span class="p">))</span>
-
-    <span class="n">def</span> <span class="n">unregister</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">):</span>
-        &quot;&quot;&quot;取消注册&quot;&quot;&quot;
-        <span class="n">delattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">methodName</span><span class="p">)</span>
-
-<span class="n">class</span> <span class="n">Functor</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self ...</span></pre></div>
-                <a class="readmore" href="./python-simplefactory.html">read more</a>
-                <p>There are <a href="./python-simplefactory.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-singleton.html" rel="bookmark"
-                           title="Permalink to python设计模式之单例模式">python设计模式之单例模式</a></h1>
+                    <h1><a href="./python-borg.html" rel="bookmark"
+                           title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h1>
                 </header>
                 
                 <div class="entry-content">
@@ -175,37 +119,76 @@ Simple factory也就是<em>通过一个工厂类</em>的参数来决定产生的
         </address>
         <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
 <p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>单例模式</h2>
-<p>通过Singleton模式，全局保证只有一个实例，在python中怎么用呢？</p>
+</footer><!-- /.post-info -->                <h2>Borg模式</h2>
+<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don't need no stinkin' singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。
+为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
 <h2>python的例子</h2>
-<p>我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">ConnectionSingleton</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="s">&#39;&#39;&#39;通过重载实例化函数__new__缓存mongodb连接&#39;&#39;&#39;</span>
-    <span class="n">conn</span><span class="p">=</span><span class="n">None</span>
-    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span> <span class="n">is</span> <span class="n">None</span><span class="p">:</span>
-            <span class="n">cls</span><span class="p">.</span><span class="n">conn</span><span class="p">=</span><span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span>
-</pre></div>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Config</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">_we_are_one</span> <span class="p">=</span> <span class="p">{}</span>
+    <span class="n">_myvalue</span> <span class="p">=</span> &quot;&quot;
 
+    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">self</span> <span class="p">=</span> <span class="n">object</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__dict__</span> <span class="p">=</span> <span class="n">cls</span><span class="p">.</span><span class="n">_we_are_one</span>
+        <span class="k">return</span> <span class="n">self</span>
 
-<p>调用的时候可以</p>
-<div class="highlight"><pre><span class="n">db</span> <span class="p">=</span> <span class="n">ConnectionSingleton</span><span class="p">()</span>
-</pre></div>
+    <span class="n">def</span> <span class="n">myvalue</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+        <span class="n">self ...</span></pre></div>
+                <a class="readmore" href="./python-borg.html">read more</a>
+                <p>There are <a href="./python-borg.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
 
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="./python-builder.html" rel="bookmark"
+                           title="Permalink to python设计模式之Builder模式">python设计模式之Builder模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-16T00:00:00">
+                四 16 五月 2013
+        </abbr>
 
-<h2>和pymongo相关的温馨提示</h2>
-<ol>
-<li>请不要使用pymongo.Connection，官网不推荐，并且有个问题，当你close它的实例，连接数并没有立刻减少</li>
-<li>做好数据库操作的类变量的封装，调用完毕要显式close/disconnect</li>
-</ol>
-                <a class="readmore" href="./python-singleton.html">read more</a>
-                <p>There are <a href="./python-singleton.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>Builder模式</h2>
+<p>Builder模式帮你把一个不同类的大工程分开成不同的部分，最后在把这些合并起来</p>
+<h2>python的例子</h2>
+<p>制造一辆车的工序是很繁琐和浩大的，我们可以定一个车辆的描述</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Vehicle</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="p">=</span> <span class="n">type_name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> <span class="n">None</span>
+
+    # 不同的车子类型，齿轮，车门数，座位数都不尽相同
+    <span class="n">def</span> <span class="n">view</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span><span class="p">(</span>
+            &quot;<span class="n">This</span> <span class="n">vehicle</span> <span class="n">is</span> <span class="n">a</span> &quot; <span class="o">+</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="o">+</span>
+            &quot; <span class="n">with</span><span class="p">;</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">wheels</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">wheels</span><span class="p">,</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">doors</span><span class="p">,</span> <span class="n">and</span> &quot; <span class="o">+</span>
+            <span class="n">str ...</span></pre></div>
+                <a class="readmore" href="./python-builder.html">read more</a>
+                <p>There are <a href="./python-builder.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">
                         <a href="./index.html">&laquo;</a>
-                Page 2 / 2
+                Page 2 / 3
+            <a href="./index3.html">&raquo;</a>
     </p>
                         </section><!-- /#content -->
                     <section id="extras" class="body">
