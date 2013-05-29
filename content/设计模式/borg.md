@@ -1,6 +1,6 @@
 title: python设计模式之Borg模式
 slug: python-borg
-date: 2013-05-16
+date: 2013-05-26
 category: 设计模式 
 tags: Design Patterns
 
