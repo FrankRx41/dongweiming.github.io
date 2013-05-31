@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之Builder模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-builder.html" rel="bookmark"
+           title="Permalink to python设计模式之Builder模式">python设计模式之Builder模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-27T00:00:00">
+                一 27 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>Builder模式</h2>
+<p>Builder模式帮你把一个不同类的大工程分开成不同的部分，最后在把这些合并起来</p>
+<h2>python的例子</h2>
+<p>制造一辆车的工序是很繁琐和浩大的，我们可以定一个车辆的描述</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Vehicle</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="p">=</span> <span class="n">type_name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> <span class="n">None</span>
+
+    # 不同的车子类型，齿轮，车门数，座位数都不尽相同
+    <span class="n">def</span> <span class="n">view</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span><span class="p">(</span>
+            &quot;<span class="n">This</span> <span class="n">vehicle</span> <span class="n">is</span> <span class="n">a</span> &quot; <span class="o">+</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="o">+</span>
+            &quot; <span class="n">with</span><span class="p">;</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">wheels</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">wheels</span><span class="p">,</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">doors</span><span class="p">,</span> <span class="n">and</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">seats</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">seats</span><span class="p">.</span>&quot;
+            <span class="p">)</span>
+</pre></div>
+
+
+<p>这里我要把制造齿轮，车门，座位的工序抽象出来，用不同的制造部门去做</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">VehicleBuilder</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">__metadata__</span> <span class="p">=</span> <span class="n">abc</span><span class="p">.</span><span class="n">ABCMeta</span>
+    # 装饰器定义抽象方法（只能用在 <span class="n">metaclass</span> 为 <span class="n">abc</span><span class="p">.</span><span class="n">ABCMeta</span> 或其子类的 <span class="n">class</span> 中）
+    # 这里其实当然可以用<span class="n">pass</span>，或者<span class="n">raise</span>一个基类未实现的异常
+    <span class="p">@</span><span class="n">abc</span><span class="p">.</span><span class="n">abstractmethod</span>
+    <span class="n">def</span> <span class="n">make_wheels</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span>
+
+    <span class="p">@</span><span class="n">abc</span><span class="p">.</span><span class="n">abstractmethod</span>
+    <span class="n">def</span> <span class="n">make_doors</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span>
+
+    <span class="p">@</span><span class="n">abc</span><span class="p">.</span><span class="n">abstractmethod</span>
+    <span class="n">def</span> <span class="n">make_seats</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span>
+</pre></div>
+
+
+<p>然后设想我要制造汽车和自行车， 每个都要继承这个VehicleBuilder基类，但是齿轮，车门，座位都是不一样的</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">CarBuilder</span><span class="p">(</span><span class="n">VehicleBuilder</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span> <span class="p">=</span> <span class="n">Vehicle</span><span class="p">(</span>&quot;<span class="n">Car</span> &quot;<span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">make_wheels</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> 4
+
+    <span class="n">def</span> <span class="n">make_doors</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> 3
+
+    <span class="n">def</span> <span class="n">make_seats</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> 5
+
+<span class="n">class</span> <span class="n">BikeBuilder</span><span class="p">(</span><span class="n">VehicleBuilder</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span> <span class="p">=</span> <span class="n">Vehicle</span><span class="p">(</span>&quot;<span class="n">Bike</span>&quot;<span class="p">)</span>
+
+    <span class="n">def</span> <span class="n">make_wheels</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> 2
+
+    <span class="n">def</span> <span class="n">make_doors</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> 0
+
+    <span class="n">def</span> <span class="n">make_seats</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">vehicle</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> 2
+</pre></div>
+
+
+<p>下面是最重要的环节：制造的Director</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">VehicleManufacturer</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">builder</span> <span class="p">=</span> <span class="n">None</span>
+    # 根据传进来的<span class="n">builder</span>制造它提供的产品规格
+    <span class="n">def</span> <span class="n">create</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">assert</span> <span class="n">not</span> <span class="n">self</span><span class="p">.</span><span class="n">builder</span> <span class="n">is</span> <span class="n">None</span><span class="p">,</span> &quot;<span class="n">No</span> <span class="n">defined</span> <span class="n">builder</span>&quot;
+        <span class="n">self</span><span class="p">.</span><span class="n">builder</span><span class="p">.</span><span class="n">make_wheels</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">builder</span><span class="p">.</span><span class="n">make_doors</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">builder</span><span class="p">.</span><span class="n">make_seats</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">builder</span><span class="p">.</span><span class="n">vehicle</span>
+</pre></div>
+
+
+<p>看起来是不是有点和以前的模式不好分辨？ 主要下面的调用方式</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> &quot;<span class="n">__main__</span>&quot;<span class="p">:</span>
+    <span class="n">manufacturer</span> <span class="p">=</span> <span class="n">VehicleManufacturer</span><span class="p">()</span>
+    # 重要的是这样的调用方式，每次修改<span class="n">builder</span>方法传入不同的要求，然后在<span class="n">create</span>里面去制造，
+    # 整个过程都是在<span class="n">VehicleManufacturer</span>完成
+    <span class="n">manufacturer</span><span class="p">.</span><span class="n">builder</span> <span class="p">=</span> <span class="n">CarBuilder</span><span class="p">()</span>
+    <span class="n">car</span> <span class="p">=</span> <span class="n">manufacturer</span><span class="p">.</span><span class="n">create</span><span class="p">()</span>
+    <span class="n">car</span><span class="p">.</span><span class="n">view</span><span class="p">()</span>
+
+    <span class="n">manufacturer</span><span class="p">.</span><span class="n">builder</span> <span class="p">=</span> <span class="n">BikeBuilder</span><span class="p">()</span>
+    <span class="n">bike</span> <span class="p">=</span> <span class="n">manufacturer</span><span class="p">.</span><span class="n">create</span><span class="p">()</span>
+    <span class="n">bike</span><span class="p">.</span><span class="n">view</span><span class="p">()</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+        <!-- UY BEGIN -->
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1788025" async=""></script>
+    <!-- UY END -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

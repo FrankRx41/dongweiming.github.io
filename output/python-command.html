@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之命令调度模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-command.html" rel="bookmark"
+           title="Permalink to python设计模式之命令调度模式">python设计模式之命令调度模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-18T00:00:00">
+                六 18 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>命令调度模式</h2>
+<p>设想一个问题，假如你经常搞web框架，你知道GET/POST/PUT/DELETE，当你想确定使用那种方式工作你需要大概这样:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;get&#39;</span><span class="p">:</span>
+    <span class="n">get</span><span class="p">()</span>
+<span class="n">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;put&#39;</span><span class="p">:</span>
+    <span class="n">put</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">error</span><span class="p">()</span>
+</pre></div>
+
+
+<p>抑或写一个字典作为调度的方式：</p>
+<div class="highlight"><pre><span class="n">dispatch_table</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="n">get</span><span class="p">,</span>
+    <span class="s">&#39;put&#39;</span><span class="p">:</span> <span class="n">put</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="n">dispatch_table</span><span class="p">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="n">func</span> <span class="p">=</span> <span class="n">dispatch_table</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+    <span class="n">func</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">error</span><span class="p">()</span>
+</pre></div>
+
+
+<p>其实呢？python已经自带了很多这样的功能的东西，Guido van Rossum把这个模式叫做Command Dispatch</p>
+<p>喏  这就是,只是你没有意识到</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">greet</span><span class="p">(</span><span class="n">who</span><span class="p">):</span>
+    <span class="n">print</span> &quot;<span class="n">Hello</span> <span class="c">%s&quot; % who</span>
+<span class="n">greet_command</span> <span class="p">=</span> <span class="n">lambda</span><span class="p">:</span> <span class="n">greet</span><span class="p">(</span>&quot;<span class="n">World</span>&quot;<span class="p">)</span>
+<span class="n">greet_command</span><span class="p">()</span>
+</pre></div>
+
+
+<p>还有python自带的库<a href="http://pymotw.com/2/cmd/index.html#module-cmd">cmd</a>
+还是上面的例子</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Dispatcher</span><span class="p">:</span>
+
+<span class="n">def</span> <span class="n">do_get</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> <span class="p">...</span>
+
+<span class="n">def</span> <span class="n">do_put</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> <span class="p">...</span>
+
+<span class="n">def</span> <span class="n">error</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> <span class="p">...</span>
+
+<span class="n">def</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+    <span class="n">mname</span> <span class="p">=</span> <span class="s">&#39;do_&#39;</span> <span class="o">+</span> <span class="n">command</span>
+    <span class="k">if</span> <span class="n">hasattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">mname</span><span class="p">):</span>
+        <span class="n">method</span> <span class="p">=</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">mname</span><span class="p">)</span>
+        <span class="n">method</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">error</span><span class="p">()</span>
+</pre></div>
+
+
+<h2>python的例子</h2>
+<p>我这里实现了一个封装pymongo的类，通过工厂方法模式执行insert/update/find操作，我这里只实现个效果</p>
+<div class="highlight"><pre><span class="n">from</span> <span class="n">pymongo</span> <span class="n">import</span> <span class="n">MongoClient</span>
+
+<span class="n">class</span> <span class="n">MongoPack</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span> <span class="p">=</span> <span class="n">db</span>
+
+    # 通过指定<span class="n">kind</span>标识操作的种类<span class="p">:</span><span class="nb">find</span><span class="o">/</span><span class="n">insert</span><span class="o">/</span><span class="n">update</span>
+    <span class="n">def</span> <span class="n">operation</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">coll</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">)(</span><span class="n">coll</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    # 当指定<span class="n">kind</span>为<span class="s">&#39;find&#39;</span>执行这个方法
+    <span class="n">def</span> <span class="nb">find</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">coll</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">[</span><span class="n">coll</span><span class="p">].</span><span class="nb">find</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">db</span> <span class="p">=</span> <span class="n">MongoClient</span><span class="p">()[</span><span class="s">&#39;test&#39;</span><span class="p">]</span>
+    <span class="n">d</span> <span class="p">=</span> <span class="n">MongoPack</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">print</span> <span class="n">d</span><span class="p">.</span><span class="n">operation</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="s">&#39;find&#39;</span><span class="p">,</span> <span class="n">id</span><span class="p">=</span>1<span class="p">)[</span>0<span class="p">]</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+        <!-- UY BEGIN -->
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1788025" async=""></script>
+    <!-- UY END -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

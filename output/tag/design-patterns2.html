@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>小明明s Github - Design Patterns</title>
+        <link rel="stylesheet" href="../theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="../">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li ><a href="../category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
+
+                 
+                            <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="3">
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-adapter.html" rel="bookmark"
+                           title="Permalink to python设计模式之Adapter模式">python设计模式之Adapter模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-27T00:00:00">
+                一 27 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>适应模式</h2>
+<p>Adapter模式是一个很实用的模式，比如在<a href="http://grok.zope.org/doc/current/grok_overview.html#adapters">zope</a>中。
+以前说了抽象工厂模式，你会发现每个产品类的接口方法名都是一样的，比如eat，他们都要吃。这个Adapter模式的区别呢？
+各个产品类的操作不尽相同，但是怎么样兼容这些不一样的方法呢？举个能想到的例子，我们渐进的来理解</p>
+<h2>想要通过不同的动物返回他们的声音和类型</h2>
+<p>我想很多人会这么写</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+    <span class="n">def</span> <span class="n">bark</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="n">wangwang</span>&quot;
+
+<span class="n">def</span> <span class="n">Animal</span><span class="p">(</span><span class="n">animal</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">animal</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">animal</span><span class="p">.</span><span class="n">bark</span><span class="p">()</span>
+</pre></div>
+
+
+<p>但要是有很类型的动物，其它动物可不会bark(吠), 所以上面的bark这个方法名字就很不好，因为不够通用
+，好吧 我们换个名字make_noise, 这个时候Cat类出现，Adapter模式也第一次出现，为了兼容Dog</p>
+<div class="highlight"><pre><span class="n">class ...</span></pre></div>
+                <a class="readmore" href="../python-adapter.html">read more</a>
+                <p>There are <a href="../python-adapter.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-builder.html" rel="bookmark"
+                           title="Permalink to python设计模式之Builder模式">python设计模式之Builder模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-27T00:00:00">
+                一 27 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>Builder模式</h2>
+<p>Builder模式帮你把一个不同类的大工程分开成不同的部分，最后在把这些合并起来</p>
+<h2>python的例子</h2>
+<p>制造一辆车的工序是很繁琐和浩大的，我们可以定一个车辆的描述</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Vehicle</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="p">=</span> <span class="n">type_name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> <span class="n">None</span>
+
+    # 不同的车子类型，齿轮，车门数，座位数都不尽相同
+    <span class="n">def</span> <span class="n">view</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span><span class="p">(</span>
+            &quot;<span class="n">This</span> <span class="n">vehicle</span> <span class="n">is</span> <span class="n">a</span> &quot; <span class="o">+</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="o">+</span>
+            &quot; <span class="n">with</span><span class="p">;</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">wheels</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">wheels</span><span class="p">,</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">doors</span><span class="p">,</span> <span class="n">and</span> &quot; <span class="o">+</span>
+            <span class="n">str ...</span></pre></div>
+                <a class="readmore" href="../python-builder.html">read more</a>
+                <p>There are <a href="../python-builder.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-borg.html" rel="bookmark"
+                           title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-26T00:00:00">
+                日 26 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>Borg模式</h2>
+<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don't need no stinkin' singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。
+为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Config</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">_we_are_one</span> <span class="p">=</span> <span class="p">{}</span>
+    <span class="n">_myvalue</span> <span class="p">=</span> &quot;&quot;
+
+    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">self</span> <span class="p">=</span> <span class="n">object</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__dict__</span> <span class="p">=</span> <span class="n">cls</span><span class="p">.</span><span class="n">_we_are_one</span>
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">myvalue</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+        <span class="n">self ...</span></pre></div>
+                <a class="readmore" href="../python-borg.html">read more</a>
+                <p>There are <a href="../python-borg.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../python-state.html" rel="bookmark"
+                           title="Permalink to python设计模式之状态模式">python设计模式之状态模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-26T00:00:00">
+                日 26 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>State模式</h2>
+<p>状态模式是一种常用的模式，和名字一样，可以在调用时修改其内部属性，看起来就像改变了类的状态</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">NetworkCardState</span><span class="p">:</span>
+    &quot;&quot;&quot;基类&quot;&quot;&quot;
+    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplementedError</span>
+
+    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplementedError</span>
+
+<span class="n">class</span> <span class="n">Online</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
+    &quot;&quot;&quot;在线&quot;&quot;&quot;
+    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">sending</span> <span class="n">Data</span>&quot;
+
+    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">receiving</span> <span class="n">Data</span>&quot;
+
+<span class="n">class</span> <span class="n">Offline</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
+    &quot;&quot;&quot;离线&quot;&quot;&quot;
+    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">cannot</span> <span class="n">send</span><span class="p">...</span><span class="n">Offline</span>&quot;
+
+    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print ...</span></pre></div>
+                <a class="readmore" href="../python-state.html">read more</a>
+                <p>There are <a href="../python-state.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            </ol><!-- /#posts-list -->
+                            <p class="paginator">
+                        <a href="../tag/design-patterns.html">&laquo;</a>
+                Page 2 / 4
+            <a href="../tag/design-patterns3.html">&raquo;</a>
+    </p>
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

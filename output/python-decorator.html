@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之装饰器模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-decorator.html" rel="bookmark"
+           title="Permalink to python设计模式之装饰器模式">python设计模式之装饰器模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-18T00:00:00">
+                六 18 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>装饰器模式</h2>
+<p>在python中装饰器已经算是代码级别的模式了，装饰器这个@符号会深入你我心，而这个技能也是写代码必备之大技.增加额外的功能，装饰器其实就是在你执行类或者函数之前给你封装了一层或者多层(多个装饰器，这在web框架代码中很常见)操作，z但是不影响你最后执行代码
+其实原理就是：有一些函数或者类里面有一些步骤是一样的(比如对数据缓存，比如加锁和释放)，那么你就可以把这些重复的东西拿出来放在装饰器里面，这样每个函数或者类就不需要写这样多的代码，而抽象出来。而通过这样的额外功能可以还能让你执行的函数或者类计数等</p>
+<h2>python的例子</h2>
+<p>一时间还想不起来干啥，好吧写了个缓存数据到redis的装饰器</p>
+<div class="highlight"><pre><span class="n">from</span> <span class="n">functools</span> <span class="n">import</span> <span class="n">wraps</span>
+<span class="n">from</span> <span class="n">redis</span> <span class="n">import</span> <span class="n">Redis</span>
+<span class="n">redis</span> <span class="p">=</span> <span class="n">Redis</span><span class="p">()</span>
+
+<span class="n">def</span> <span class="n">cached</span><span class="p">(</span><span class="n">timeout</span><span class="p">=</span>5 <span class="o">*</span> 60<span class="p">):</span>
+    <span class="n">def</span> <span class="n">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        # <span class="n">wraps</span>帮你将函数原来的属性复制过来
+        <span class="p">@</span><span class="n">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">def</span> <span class="n">decorated_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            # 以执行函数的参数为键
+            <span class="n">key</span> <span class="p">=</span> <span class="n">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">rv</span> <span class="p">=</span> <span class="n">redis</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            # 发现缓存过直接返回
+            <span class="k">if</span> <span class="n">rv</span> <span class="n">is</span> <span class="n">not</span> <span class="n">None</span><span class="p">:</span>
+                <span class="n">print</span> <span class="s">&#39;Has match: &#39;</span><span class="p">,</span> <span class="n">rv</span>
+                <span class="k">return</span> <span class="n">rv</span>
+            <span class="n">rv</span> <span class="p">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">redis</span><span class="p">.</span><span class="n">setex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">time</span><span class="p">=</span><span class="n">timeout</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rv</span>
+        <span class="k">return</span> <span class="n">decorated_function</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+<span class="p">@</span><span class="n">cached</span><span class="p">()</span>
+<span class="n">def</span> <span class="n">printNumber</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">num</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    # 注意列表数据有重复
+    <span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">[</span>1<span class="p">,</span> 2<span class="p">,</span> 5<span class="p">,</span> 11<span class="p">,</span> 2<span class="p">,</span> 7<span class="p">,</span> 9<span class="p">,</span> 1<span class="p">]:</span>
+        <span class="n">print</span> <span class="n">printNumber</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
+</pre></div>
+
+
+<p>说到装饰器就要提一个模块: <a href="http://micheles.googlecode.com/hg/decorator/documentation.html">decorator</a> 它是 Michele Simionato 为简化python的decorator的使用难度而开发的，强烈建议深入学习</p>
+    </div><!-- /.entry-content -->
+        <!-- UY BEGIN -->
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1788025" async=""></script>
+    <!-- UY END -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
