@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8">
-        <title>小明明s Github</title>
+        <title>python设计模式之组合模式</title>
         <link rel="stylesheet" href="./theme/css/main.css">
                 <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
                         <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
@@ -19,16 +19,19 @@
         <header id="banner" class="body">
                 <h1><a href="./">小明明s Github </a></h1>
                 <nav><ul>
-                                                                                    <li ><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
                                                 </ul></nav>
         </header><!-- /#banner -->
-                
-            
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-composite.html" rel="bookmark"
+           title="Permalink to python设计模式之组合模式">python设计模式之组合模式</a></h1>
+          </header>
 
-                            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="./python-composite.html">python设计模式之组合模式</a></h1> 
-                    <footer class="post-info">
+    <div class="entry-content">
+      <footer class="post-info">
         <abbr class="published" title="2013-05-29T00:00:00">
                 三 29 五月 2013
         </abbr>
@@ -38,7 +41,7 @@
         </address>
         <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
 <p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info --><h2>组合模式</h2>
+</footer><!-- /.post-info -->      <h2>组合模式</h2>
 <p>我们把Composite模式看成一个复杂的属性结构，其实基本有三种角色：树干（定义一些操作树叶leaf的操作），树枝(树干上有很多树枝)和树叶（树干想要具体操作的对象）
 ，Composite模式帮我们实现：即它们在充当对象的时候，还是其他对象的容易，从而提供一致性</p>
 <h2>python的例子</h2>
@@ -102,144 +105,16 @@
     # <span class="n">t3</span>的左树其实就是叶子对象了
     <span class="n">t5</span> <span class="p">=</span> <span class="n">t3</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">subtree</span><span class="p">()</span>
     <span class="n">print</span> <span class="n">t5</span>
-</pre></div><p>There are <a href="./python-composite.html#disqus_thread">comments</a>.</p>                </article>
-                            </aside><!-- /#featured -->
-                            <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-                                                
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-chain.html" rel="bookmark"
-                           title="Permalink to python设计模式之责任链模式">python设计模式之责任链模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-28T00:00:00">
-                二 28 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>责任链模式</h2>
-<p>比如我们还在读书的时候，考试的分数都是几个档次，比如90-100分，80-90分，好吧我想做一个根据分数打印你的学习成绩的反馈，
-比如90-100就是A+，80-90就是A，70-80就是B+... 当然你可以用很多种方法实现，我这里就来实现一个Chain模式:用一系列的类来响应，
-但只有遇到适合处理它的类才会处理，类似与case和switch的作用</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">BaseHandler</span><span class="p">:</span>
-    # 它起到了链的作用
-    <span class="n">def</span> <span class="n">successor</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">successor</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">successor</span> <span class="p">=</span> <span class="n">successor</span>
-
-<span class="n">class</span> <span class="n">ScoreHandler1</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">handle</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">request</span> <span class="o">&gt;</span> 90 <span class="n">and</span> <span class="n">request</span> <span class="o">&lt;</span><span class="p">=</span> 100<span class="p">:</span>
-            <span class="k">return</span> &quot;<span class="n">A</span><span class="o">+</span>&quot;
-        <span class="k">else</span><span class="p">:</span>
-            # 否则传给下一个链，下同，但是我是要<span class="k">return</span>回结果的
-            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">successor</span><span class="p">.</span><span class="n">handle ...</span></pre></div>
-                <a class="readmore" href="./python-chain.html">read more</a>
-                <p>There are <a href="./python-chain.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-facade.html" rel="bookmark"
-                           title="Permalink to python设计模式之外观模式">python设计模式之外观模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-28T00:00:00">
-                二 28 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>外观模式</h2>
-<p>Facade模式其实就是把一些工作接口，根据一定的组合提供一些接口，比如你有1,2,3,4四种功能，你提供的接口一调用了123,接口二调用了124,接口三调用了34,这样的方式</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Test1</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 1 ######&quot;
-
-<span class="n">class</span> <span class="n">Test2</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 2 ######&quot;
-
-<span class="n">class</span> <span class="n">Test3</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 3 ######&quot;
-
-<span class="n">class</span> <span class="n">Runner</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">t1 ...</span></pre></div>
-                <a class="readmore" href="./python-facade.html">read more</a>
-                <p>There are <a href="./python-facade.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-pototype.html" rel="bookmark"
-                           title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-28T00:00:00">
-                二 28 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>Pototype模式</h2>
-<p>假如你爱玩游戏，你能想到游戏里面有很多的角色，但是其实你有没有注意:脸型，身材，眼睛..这些其实都是略有不同的搭配，
-这也就是原型的作用：不需要你每次都制造一个复杂的人物，只是根据一个原型的人物做些简单的修改即可</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="c"># 这里肯定要做深拷贝，要不然python的就是对象的引用</span>
-<span class="n">from</span> <span class="n">copy</span> <span class="n">import</span> <span class="n">deepcopy</span>
-
-<span class="nb">class</span> <span class="n">Prototype</span><span class="p">:</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span> <span class="p">=</span> <span class="p">{}</span>
-
-    <span class="n">def</span> <span class="n">registerObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;注册对象&quot;&quot;&quot;</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="p">=</span> <span class="n">obj</span>
-
-    <span class="n">def</span> <span class="n">unregisterObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;取消注册&quot;&quot;&quot;</span>
-        <span class="n">del</span> <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-    <span class="n">def</span> <span class="n">clone</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;克隆对象 ...</span></pre></div>
-                <a class="readmore" href="./python-pototype.html">read more</a>
-                <p>There are <a href="./python-pototype.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            </ol><!-- /#posts-list -->
-                            <p class="paginator">
-        Page 1 / 4
-            <a href="./index2.html">&raquo;</a>
-    </p>
-                        </section><!-- /#content -->
-                    <section id="extras" class="body">
+</pre></div>
+    </div><!-- /.entry-content -->
+        <!-- UY BEGIN -->
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1788025" async=""></script>
+    <!-- UY END -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
                         <div class="blogroll">
                         <h2>blogroll</h2>
                         <ul>

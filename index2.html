@@ -30,14 +30,14 @@
                     <ol id="posts-list" class="hfeed" start="3">
                         <li><article class="hentry">    
                 <header>
-                    <h1><a href="./python-flyweight.html" rel="bookmark"
-                           title="Permalink to python设计模式之享元模式">python设计模式之享元模式</a></h1>
+                    <h1><a href="./python-adapter.html" rel="bookmark"
+                           title="Permalink to python设计模式之Adapter模式">python设计模式之Adapter模式</a></h1>
                 </header>
                 
                 <div class="entry-content">
                 <footer class="post-info">
-        <abbr class="published" title="2013-05-18T00:00:00">
-                六 18 五月 2013
+        <abbr class="published" title="2013-05-27T00:00:00">
+                一 27 五月 2013
         </abbr>
 
                 <address class="vcard author">
@@ -45,98 +45,28 @@
         </address>
         <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
 <p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>享元模式</h2>
-<p>Flyweight模式，顾名思义，就是共享元数据，在python这个动态语言中可以提高程序性能和效率，比如从一个文件读取很多的字符串，而这些字符串必定重复，所以可以使用这个模式将其存在一个pool中</p>
-<h2>python的例子(我将提出一系列的例子不同方式实现这个功能)</h2>
-<p>普通青年版，看了Gof，可能就会有这样基础的一段代码:</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Spam</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">a</span> <span class="p">=</span> <span class="n">a</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">b</span> <span class="p">=</span> <span class="n">b</span>
+</footer><!-- /.post-info -->                <h2>适应模式</h2>
+<p>Adapter模式是一个很实用的模式，比如在<a href="http://grok.zope.org/doc/current/grok_overview.html#adapters">zope</a>中。
+以前说了抽象工厂模式，你会发现每个产品类的接口方法名都是一样的，比如eat，他们都要吃。这个Adapter模式的区别呢？
+各个产品类的操作不尽相同，但是怎么样兼容这些不一样的方法呢？举个能想到的例子，我们渐进的来理解</p>
+<h2>想要通过不同的动物返回他们的声音和类型</h2>
+<p>我想很多人会这么写</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+    <span class="n">def</span> <span class="n">bark</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="n">wangwang</span>&quot;
 
-<span class="n">class</span> <span class="n">SpamFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span>  <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">__instances</span> <span class="p">=</span> <span class="n">dict</span><span class="p">()</span>
+<span class="n">def</span> <span class="n">Animal</span><span class="p">(</span><span class="n">animal</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">animal</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">animal</span><span class="p">.</span><span class="n">bark</span><span class="p">()</span>
+</pre></div>
 
-    <span class="n">def</span> <span class="n">get_instance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        # 在实例化后生成一个字典，当新的元祖对不存在就缓存起来
-        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="n">not</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances ...</span></pre></div>
-                <a class="readmore" href="./python-flyweight.html">read more</a>
-                <p>There are <a href="./python-flyweight.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-strategy.html" rel="bookmark"
-                           title="Permalink to python设计模式之策略模式">python设计模式之策略模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-18T00:00:00">
-                六 18 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>策略模式</h2>
-<p>Strategy 模式和抽象工厂可能最难分辨，抽象工厂帮助我们根据我们的参数找到对应的操作工厂，而每个操作工厂提供了相同的接口函数
-操作工厂所以可能是从一个基类继承的不同实现，举个例子，有个鸭子的基类，然后有很多品种的鸭子是不同的操作工厂，本来根据抽象工厂会返回这个操作工厂来获得这个特定的鸭子的类型，比如一个fly的方法，问题出现了：
-有些鸭子会飞，有些不会飞。在实际中有Mixin的角度，但是我们经常能看见这样的实现：</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Duck</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
-    # 明确不能直接访问基类的这个方法，他们是具体类去实现
-    # <span class="n">kind</span> 标识能不能飞<span class="p">,</span> 可以设置<span class="n">yes</span>和<span class="n">no</span>
-    <span class="n">def</span> <span class="n">fly</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
-        <span class="n">raise</span> <span class="n">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Exception raised, Duck is supposed to be an interface / abstract class!&#39;</span><span class="p">)</span>
-
-<span class="n">class</span> <span class="n">Duck1</span><span class="p">(</span><span class="n">Duck</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">fly</span><span class="p">(</span><span class="n">selfi ...</span></pre></div>
-                <a class="readmore" href="./python-strategy.html">read more</a>
-                <p>There are <a href="./python-strategy.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-borg.html" rel="bookmark"
-                           title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-16T00:00:00">
-                四 16 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>Borg模式</h2>
-<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don't need no stinkin' singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。
-为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Config</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">_we_are_one</span> <span class="p">=</span> <span class="p">{}</span>
-    <span class="n">_myvalue</span> <span class="p">=</span> &quot;&quot;
-
-    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-        <span class="n">self</span> <span class="p">=</span> <span class="n">object</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">__dict__</span> <span class="p">=</span> <span class="n">cls</span><span class="p">.</span><span class="n">_we_are_one</span>
-        <span class="k">return</span> <span class="n">self</span>
-
-    <span class="n">def</span> <span class="n">myvalue</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-        <span class="n">self ...</span></pre></div>
-                <a class="readmore" href="./python-borg.html">read more</a>
-                <p>There are <a href="./python-borg.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+<p>但要是有很类型的动物，其它动物可不会bark(吠), 所以上面的bark这个方法名字就很不好，因为不够通用
+，好吧 我们换个名字make_noise, 这个时候Cat类出现，Adapter模式也第一次出现，为了兼容Dog</p>
+<div class="highlight"><pre><span class="n">class ...</span></pre></div>
+                <a class="readmore" href="./python-adapter.html">read more</a>
+                <p>There are <a href="./python-adapter.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             
 
@@ -149,8 +79,8 @@
                 
                 <div class="entry-content">
                 <footer class="post-info">
-        <abbr class="published" title="2013-05-16T00:00:00">
-                四 16 五月 2013
+        <abbr class="published" title="2013-05-27T00:00:00">
+                一 27 五月 2013
         </abbr>
 
                 <address class="vcard author">
@@ -184,10 +114,98 @@
                 <a class="readmore" href="./python-builder.html">read more</a>
                 <p>There are <a href="./python-builder.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="./python-borg.html" rel="bookmark"
+                           title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-26T00:00:00">
+                日 26 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>Borg模式</h2>
+<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don't need no stinkin' singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。
+为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Config</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">_we_are_one</span> <span class="p">=</span> <span class="p">{}</span>
+    <span class="n">_myvalue</span> <span class="p">=</span> &quot;&quot;
+
+    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">self</span> <span class="p">=</span> <span class="n">object</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__dict__</span> <span class="p">=</span> <span class="n">cls</span><span class="p">.</span><span class="n">_we_are_one</span>
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">myvalue</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+        <span class="n">self ...</span></pre></div>
+                <a class="readmore" href="./python-borg.html">read more</a>
+                <p>There are <a href="./python-borg.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="./python-state.html" rel="bookmark"
+                           title="Permalink to python设计模式之状态模式">python设计模式之状态模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-26T00:00:00">
+                日 26 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>State模式</h2>
+<p>状态模式是一种常用的模式，和名字一样，可以在调用时修改其内部属性，看起来就像改变了类的状态</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">NetworkCardState</span><span class="p">:</span>
+    &quot;&quot;&quot;基类&quot;&quot;&quot;
+    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplementedError</span>
+
+    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplementedError</span>
+
+<span class="n">class</span> <span class="n">Online</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
+    &quot;&quot;&quot;在线&quot;&quot;&quot;
+    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">sending</span> <span class="n">Data</span>&quot;
+
+    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">receiving</span> <span class="n">Data</span>&quot;
+
+<span class="n">class</span> <span class="n">Offline</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
+    &quot;&quot;&quot;离线&quot;&quot;&quot;
+    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">cannot</span> <span class="n">send</span><span class="p">...</span><span class="n">Offline</span>&quot;
+
+    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print ...</span></pre></div>
+                <a class="readmore" href="./python-state.html">read more</a>
+                <p>There are <a href="./python-state.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">
                         <a href="./index.html">&laquo;</a>
-                Page 2 / 3
+                Page 2 / 4
             <a href="./index3.html">&raquo;</a>
     </p>
                         </section><!-- /#content -->
