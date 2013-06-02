@@ -27,8 +27,154 @@
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="./python-composite.html">python设计模式之组合模式</a></h1> 
+                    <h1 class="entry-title"><a href="./python-null.html">python设计模式之Null模式</a></h1> 
                     <footer class="post-info">
+        <abbr class="published" title="2013-06-01T00:00:00">
+                六 01 六月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info --><h2>Null模式</h2>
+<p>我想每个人都有一种经历，为了获取某属性，但是有时候属性是None，那么需要你做异常处理，
+而假如你想节省这样的条件过滤的代码，可以使用Null模式以减少对象是否为None的判断</p>
+<h2>python的例子</h2>
+<p>我举个不是很通用的例子，只是为了让大家理解这个模式：我有很多类，
+但是不是每个类都有类方法test，所以我调用类方法就要做个异常处理，类似这样</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">pass</span>
+
+<span class="n">class</span> <span class="n">B</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">b</span> <span class="p">=</span> 1
+    <span class="p">@</span><span class="n">classmethod</span>
+    <span class="n">def</span> <span class="n">test</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">print</span> <span class="n">cls</span><span class="p">.</span><span class="n">b</span>
+
+<span class="n">def</span> <span class="n">get_test</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">test</span>
+    <span class="n">except</span> <span class="n">AttributeError</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="n">None</span>
+
+# 我这里只写了2个类，但是其实有很多类
+<span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">]:</span>
+    <span class="n">test</span> <span class="p">=</span> <span class="n">get_test</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
+    # 我要判断以下是否获得了这个类方法才能决定是否可以执行
+    <span class="k">if</span> <span class="n">test</span><span class="p">:</span>
+        <span class="n">test</span><span class="p">()</span>
+</pre></div>
+
+
+<p>但是我用Null方法就可以这样</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Null</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        &quot;忽略参数&quot;
+        <span class="k">return</span> <span class="n">None</span>
+
+    <span class="n">def</span> <span class="n">__call__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        &quot;忽略实例调用&quot;
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">__getattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">mname</span><span class="p">):</span>
+        &quot;忽略属性获得&quot;
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">__setattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        &quot;忽略设置属性操作&quot;
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">__delattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="s">&#39;&#39;&#39;忽略删除属性操作&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">self</span>
+
+    <span class="n">def</span> <span class="n">__repr__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="o">&lt;</span><span class="n">Null</span><span class="o">&gt;</span>&quot;
+
+    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> &quot;<span class="n">Null</span>&quot;
+</pre></div>
+
+
+<p>还是上面的功能</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">get_test_with_null</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">test</span>
+    # 异常处理返回<span class="n">Null</span>类
+    <span class="n">except</span> <span class="n">AttributeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Null</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">]:</span>
+    # 直接调用了，不需要判断
+    <span class="n">get_test_with_null</span><span class="p">(</span><span class="nb">i</span><span class="p">)()</span>
+</pre></div><p>There are <a href="./python-null.html#disqus_thread">comments</a>.</p>                </article>
+                            </aside><!-- /#featured -->
+                            <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+                                                
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="./python-bridge.html" rel="bookmark"
+                           title="Permalink to python设计模式之桥接模式">python设计模式之桥接模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-31T00:00:00">
+                五 31 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>桥接模式</h2>
+<p>这个模式其实就是把产品类的实现和抽象类分离，能够灵活的变化，假如你记得<a href="http://dongweiming.github.io/python-state.html">状态模式</a>,它是修改内部属性，
+而桥接模式是指定好内部属性，每个产品类指定这个属性被桥接模式类调用，适用于产品类可能经常调整变化，这样还能减少了产品类之间的耦合</p>
+<h2>python的例子</h2>
+<p>这里实现一个打印操作系统名字的功能 </p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Bridge</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">None</span>
+
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplemented</span><span class="p">()</span>
+
+<span class="n">class</span> <span class="n">UseCase1</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
+    # 根据初始化参数传入实现的产品类
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">implementation</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">implementation</span>
+    # 根据传入的产品类的属性打印结果
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">UseCase1</span><span class="p">:</span> &quot;<span class="p">,</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span><span class="p">.</span><span class="n">anotherFunctionality</span><span class="p">()</span>
+
+
+<span class="n">class</span> <span class="n">UseCase2</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
+    <span class="n">def ...</span></pre></div>
+                <a class="readmore" href="./python-bridge.html">read more</a>
+                <p>There are <a href="./python-bridge.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="./python-composite.html" rel="bookmark"
+                           title="Permalink to python设计模式之组合模式">python设计模式之组合模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
         <abbr class="published" title="2013-05-29T00:00:00">
                 三 29 五月 2013
         </abbr>
@@ -38,7 +184,7 @@
         </address>
         <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
 <p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info --><h2>组合模式</h2>
+</footer><!-- /.post-info -->                <h2>组合模式</h2>
 <p>我们把Composite模式看成一个复杂的属性结构，其实基本有三种角色：树干（定义一些操作树叶leaf的操作），树枝(树干上有很多树枝)和树叶（树干想要具体操作的对象）
 ，Composite模式帮我们实现：即它们在充当对象的时候，还是其他对象的容易，从而提供一致性</p>
 <h2>python的例子</h2>
@@ -56,59 +202,11 @@
         <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">=</span><span class="n">right</span>
         <span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">=</span><span class="nb">length</span>
 
-    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        # 这个结果是在调用<span class="n">subtree</span><span class="p">()</span>的时候返回
-        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">:</span>
-            <span class="k">return</span> &quot;<span class="p">(</span>&quot; <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">__str__</span><span class="p">()</span> <span class="o">+</span> &quot;<span class="p">,</span> &quot; <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">__str__</span><span class="p">()</span> <span class="o">+</span> &quot;<span class="p">)</span>&quot; <span class="o">+</span> &quot;<span class="p">:</span> &quot; <span class="o">+</span> <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">)</span> 
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> &quot;<span class="p">(</span>&quot; <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">__str__</span><span class="p">()</span> <span class="o">+</span> &quot;<span class="p">,</span> &quot; <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">__str__</span><span class="p">()</span> <span class="o">+</span> &quot;<span class="p">)</span>&quot;
-
-        # 这里其实就是一个技巧，通过这个函数返回下一级的对象，也就是它既是对象还可以是对象的容器
-        <span class="n">def</span> <span class="n">subtree</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>               
-            <span class="k">return</span> <span class="n">Composite</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
-
-<span class="n">class</span> <span class="n">Leaf</span><span class="p">(</span><span class="n">Trunk</span><span class="p">):</span>
-    <span class="s">&#39;&#39;&#39;叶子类，它没办法继续延伸了&#39;&#39;&#39;</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">length</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
-        <span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">=</span><span class="nb">length</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="p">=</span> <span class="n">None</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">right</span> <span class="p">=</span> <span class="n">None</span>
-
-    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">+</span> &quot;<span class="p">:</span> &quot; <span class="o">+</span> <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">)</span>
-
-    <span class="n">def</span> <span class="n">subtree</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Leaf</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> &quot;<span class="n">__main__</span>&quot;<span class="p">:</span>
-    # 只有叶子那么就直接返回<span class="n">__str__</span>的拼装结果
-    <span class="n">t1</span> <span class="p">=</span> <span class="n">Leaf</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> 0<span class="p">.</span>71399<span class="p">)</span>
-    <span class="n">print</span> <span class="n">t1</span>
-    # 有个2个叶子的组合，返回的是2个叶子的对象的组合
-    <span class="n">t2</span> <span class="p">=</span> <span class="n">Composite</span><span class="p">(</span><span class="n">Leaf</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="o">-</span>0<span class="p">.</span>00804<span class="p">),</span> 
-        <span class="n">Leaf</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> 0<span class="p">.</span>07470<span class="p">))</span>
-    <span class="n">print</span> <span class="n">t2</span>
-    # 这个是嵌套的叶子的组合，树干上面有树枝，树枝上面有叶子
-    <span class="n">t3</span> <span class="p">=</span> <span class="n">Composite</span><span class="p">(</span><span class="n">Leaf</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> 0<span class="p">.</span>71399<span class="p">),</span>
-        <span class="n">Composite</span><span class="p">(</span><span class="n">Leaf</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="o">-</span>0<span class="p">.</span>00804<span class="p">),</span> 
-                <span class="n">Leaf</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> 0<span class="p">.</span>07470<span class="p">),</span> 0<span class="p">.</span>1533<span class="p">),</span> 0<span class="p">.</span>0666<span class="p">)</span>
-
-    <span class="n">print</span> <span class="n">t3</span>
-    # 直接通过左右节点找到对应的叶子对象了
-    <span class="n">t4</span> <span class="p">=</span> <span class="n">t3</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">subtree</span><span class="p">()</span>
-    <span class="n">print</span> <span class="n">t4</span>
-    # <span class="n">t3</span>的左树其实就是叶子对象了
-    <span class="n">t5</span> <span class="p">=</span> <span class="n">t3</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">subtree</span><span class="p">()</span>
-    <span class="n">print</span> <span class="n">t5</span>
-</pre></div><p>There are <a href="./python-composite.html#disqus_thread">comments</a>.</p>                </article>
-                            </aside><!-- /#featured -->
-                            <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-                                                
+    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self ...</span></pre></div>
+                <a class="readmore" href="./python-composite.html">read more</a>
+                <p>There are <a href="./python-composite.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
 
                  
                         <li><article class="hentry">    
@@ -147,91 +245,6 @@
             <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">successor</span><span class="p">.</span><span class="n">handle ...</span></pre></div>
                 <a class="readmore" href="./python-chain.html">read more</a>
                 <p>There are <a href="./python-chain.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-facade.html" rel="bookmark"
-                           title="Permalink to python设计模式之外观模式">python设计模式之外观模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-28T00:00:00">
-                二 28 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>外观模式</h2>
-<p>Facade模式其实就是把一些工作接口，根据一定的组合提供一些接口，比如你有1,2,3,4四种功能，你提供的接口一调用了123,接口二调用了124,接口三调用了34,这样的方式</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Test1</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 1 ######&quot;
-
-<span class="n">class</span> <span class="n">Test2</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 2 ######&quot;
-
-<span class="n">class</span> <span class="n">Test3</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 3 ######&quot;
-
-<span class="n">class</span> <span class="n">Runner</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">t1 ...</span></pre></div>
-                <a class="readmore" href="./python-facade.html">read more</a>
-                <p>There are <a href="./python-facade.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-pototype.html" rel="bookmark"
-                           title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-28T00:00:00">
-                二 28 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>Pototype模式</h2>
-<p>假如你爱玩游戏，你能想到游戏里面有很多的角色，但是其实你有没有注意:脸型，身材，眼睛..这些其实都是略有不同的搭配，
-这也就是原型的作用：不需要你每次都制造一个复杂的人物，只是根据一个原型的人物做些简单的修改即可</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="c"># 这里肯定要做深拷贝，要不然python的就是对象的引用</span>
-<span class="n">from</span> <span class="n">copy</span> <span class="n">import</span> <span class="n">deepcopy</span>
-
-<span class="nb">class</span> <span class="n">Prototype</span><span class="p">:</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span> <span class="p">=</span> <span class="p">{}</span>
-
-    <span class="n">def</span> <span class="n">registerObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;注册对象&quot;&quot;&quot;</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="p">=</span> <span class="n">obj</span>
-
-    <span class="n">def</span> <span class="n">unregisterObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;取消注册&quot;&quot;&quot;</span>
-        <span class="n">del</span> <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-    <span class="n">def</span> <span class="n">clone</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;克隆对象 ...</span></pre></div>
-                <a class="readmore" href="./python-pototype.html">read more</a>
-                <p>There are <a href="./python-pototype.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">

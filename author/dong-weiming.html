@@ -194,14 +194,14 @@
                  
                         <li><article class="hentry">    
                 <header>
-                    <h1><a href="../python-builder.html" rel="bookmark"
-                           title="Permalink to python设计模式之Builder模式">python设计模式之Builder模式</a></h1>
+                    <h1><a href="../python-bridge.html" rel="bookmark"
+                           title="Permalink to python设计模式之桥接模式">python设计模式之桥接模式</a></h1>
                 </header>
                 
                 <div class="entry-content">
                 <footer class="post-info">
-        <abbr class="published" title="2013-05-27T00:00:00">
-                一 27 五月 2013
+        <abbr class="published" title="2013-05-31T00:00:00">
+                五 31 五月 2013
         </abbr>
 
                 <address class="vcard author">
@@ -209,31 +209,33 @@
         </address>
         <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
 <p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>Builder模式</h2>
-<p>Builder模式帮你把一个不同类的大工程分开成不同的部分，最后在把这些合并起来</p>
+</footer><!-- /.post-info -->                <h2>桥接模式</h2>
+<p>这个模式其实就是把产品类的实现和抽象类分离，能够灵活的变化，假如你记得<a href="http://dongweiming.github.io/python-state.html">状态模式</a>,它是修改内部属性，
+而桥接模式是指定好内部属性，每个产品类指定这个属性被桥接模式类调用，适用于产品类可能经常调整变化，这样还能减少了产品类之间的耦合</p>
 <h2>python的例子</h2>
-<p>制造一辆车的工序是很繁琐和浩大的，我们可以定一个车辆的描述</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Vehicle</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+<p>这里实现一个打印操作系统名字的功能 </p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Bridge</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
 
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="p">=</span> <span class="n">type_name</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> <span class="n">None</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> <span class="n">None</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> <span class="n">None</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">None</span>
 
-    # 不同的车子类型，齿轮，车门数，座位数都不尽相同
-    <span class="n">def</span> <span class="n">view</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span><span class="p">(</span>
-            &quot;<span class="n">This</span> <span class="n">vehicle</span> <span class="n">is</span> <span class="n">a</span> &quot; <span class="o">+</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="o">+</span>
-            &quot; <span class="n">with</span><span class="p">;</span> &quot; <span class="o">+</span>
-            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">wheels</span><span class="p">)</span> <span class="o">+</span>
-            &quot; <span class="n">wheels</span><span class="p">,</span> &quot; <span class="o">+</span>
-            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">+</span>
-            &quot; <span class="n">doors</span><span class="p">,</span> <span class="n">and</span> &quot; <span class="o">+</span>
-            <span class="n">str ...</span></pre></div>
-                <a class="readmore" href="../python-builder.html">read more</a>
-                <p>There are <a href="../python-builder.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplemented</span><span class="p">()</span>
+
+<span class="n">class</span> <span class="n">UseCase1</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
+    # 根据初始化参数传入实现的产品类
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">implementation</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">implementation</span>
+    # 根据传入的产品类的属性打印结果
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">UseCase1</span><span class="p">:</span> &quot;<span class="p">,</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span><span class="p">.</span><span class="n">anotherFunctionality</span><span class="p">()</span>
+
+
+<span class="n">class</span> <span class="n">UseCase2</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
+    <span class="n">def ...</span></pre></div>
+                <a class="readmore" href="../python-bridge.html">read more</a>
+                <p>There are <a href="../python-bridge.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">

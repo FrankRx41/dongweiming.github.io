@@ -30,6 +30,91 @@
                     <ol id="posts-list" class="hfeed" start="3">
                         <li><article class="hentry">    
                 <header>
+                    <h1><a href="./python-facade.html" rel="bookmark"
+                           title="Permalink to python设计模式之外观模式">python设计模式之外观模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-28T00:00:00">
+                二 28 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>外观模式</h2>
+<p>Facade模式其实就是把一些工作接口，根据一定的组合提供一些接口，比如你有1,2,3,4四种功能，你提供的接口一调用了123,接口二调用了124,接口三调用了34,这样的方式</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Test1</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 1 ######&quot;
+
+<span class="n">class</span> <span class="n">Test2</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 2 ######&quot;
+
+<span class="n">class</span> <span class="n">Test3</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
+        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 3 ######&quot;
+
+<span class="n">class</span> <span class="n">Runner</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">t1 ...</span></pre></div>
+                <a class="readmore" href="./python-facade.html">read more</a>
+                <p>There are <a href="./python-facade.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="./python-pototype.html" rel="bookmark"
+                           title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2013-05-28T00:00:00">
+                二 28 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->                <h2>Pototype模式</h2>
+<p>假如你爱玩游戏，你能想到游戏里面有很多的角色，但是其实你有没有注意:脸型，身材，眼睛..这些其实都是略有不同的搭配，
+这也就是原型的作用：不需要你每次都制造一个复杂的人物，只是根据一个原型的人物做些简单的修改即可</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="c"># 这里肯定要做深拷贝，要不然python的就是对象的引用</span>
+<span class="n">from</span> <span class="n">copy</span> <span class="n">import</span> <span class="n">deepcopy</span>
+
+<span class="nb">class</span> <span class="n">Prototype</span><span class="p">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span> <span class="p">=</span> <span class="p">{}</span>
+
+    <span class="n">def</span> <span class="n">registerObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="s">&quot;&quot;&quot;注册对象&quot;&quot;&quot;</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="p">=</span> <span class="n">obj</span>
+
+    <span class="n">def</span> <span class="n">unregisterObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="s">&quot;&quot;&quot;取消注册&quot;&quot;&quot;</span>
+        <span class="n">del</span> <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="n">def</span> <span class="n">clone</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="s">&quot;&quot;&quot;克隆对象 ...</span></pre></div>
+                <a class="readmore" href="./python-pototype.html">read more</a>
+                <p>There are <a href="./python-pototype.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
                     <h1><a href="./python-adapter.html" rel="bookmark"
                            title="Permalink to python设计模式之Adapter模式">python设计模式之Adapter模式</a></h1>
                 </header>
@@ -113,94 +198,6 @@
             <span class="n">str ...</span></pre></div>
                 <a class="readmore" href="./python-builder.html">read more</a>
                 <p>There are <a href="./python-builder.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-borg.html" rel="bookmark"
-                           title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-26T00:00:00">
-                日 26 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>Borg模式</h2>
-<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don't need no stinkin' singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。
-为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Config</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">_we_are_one</span> <span class="p">=</span> <span class="p">{}</span>
-    <span class="n">_myvalue</span> <span class="p">=</span> &quot;&quot;
-
-    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-        <span class="n">self</span> <span class="p">=</span> <span class="n">object</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">__dict__</span> <span class="p">=</span> <span class="n">cls</span><span class="p">.</span><span class="n">_we_are_one</span>
-        <span class="k">return</span> <span class="n">self</span>
-
-    <span class="n">def</span> <span class="n">myvalue</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-        <span class="n">self ...</span></pre></div>
-                <a class="readmore" href="./python-borg.html">read more</a>
-                <p>There are <a href="./python-borg.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="./python-state.html" rel="bookmark"
-                           title="Permalink to python设计模式之状态模式">python设计模式之状态模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-05-26T00:00:00">
-                日 26 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>State模式</h2>
-<p>状态模式是一种常用的模式，和名字一样，可以在调用时修改其内部属性，看起来就像改变了类的状态</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">NetworkCardState</span><span class="p">:</span>
-    &quot;&quot;&quot;基类&quot;&quot;&quot;
-    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">raise</span> <span class="n">NotImplementedError</span>
-
-    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">raise</span> <span class="n">NotImplementedError</span>
-
-<span class="n">class</span> <span class="n">Online</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
-    &quot;&quot;&quot;在线&quot;&quot;&quot;
-    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;<span class="n">sending</span> <span class="n">Data</span>&quot;
-
-    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;<span class="n">receiving</span> <span class="n">Data</span>&quot;
-
-<span class="n">class</span> <span class="n">Offline</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
-    &quot;&quot;&quot;离线&quot;&quot;&quot;
-    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;<span class="n">cannot</span> <span class="n">send</span><span class="p">...</span><span class="n">Offline</span>&quot;
-
-    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print ...</span></pre></div>
-                <a class="readmore" href="./python-state.html">read more</a>
-                <p>There are <a href="./python-state.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">

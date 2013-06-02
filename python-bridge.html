@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>python设计模式之桥接模式</title>
+        <link rel="stylesheet" href="./theme/css/main.css">
+                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/dongweiming/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="./">小明明s Github </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="./category/she-ji-mo-shi.html">设计模式</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./python-bridge.html" rel="bookmark"
+           title="Permalink to python设计模式之桥接模式">python设计模式之桥接模式</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2013-05-31T00:00:00">
+                五 31 五月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/dong-weiming.html">Dong Weiming</a>
+        </address>
+        <p>In <a href="./category/she-ji-mo-shi.html">设计模式</a>. </p>
+<p>tags: <a href="./tag/design-patterns.html">Design Patterns</a></p>
+</footer><!-- /.post-info -->      <h2>桥接模式</h2>
+<p>这个模式其实就是把产品类的实现和抽象类分离，能够灵活的变化，假如你记得<a href="http://dongweiming.github.io/python-state.html">状态模式</a>,它是修改内部属性，
+而桥接模式是指定好内部属性，每个产品类指定这个属性被桥接模式类调用，适用于产品类可能经常调整变化，这样还能减少了产品类之间的耦合</p>
+<h2>python的例子</h2>
+<p>这里实现一个打印操作系统名字的功能 </p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Bridge</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">None</span>
+
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplemented</span><span class="p">()</span>
+
+<span class="n">class</span> <span class="n">UseCase1</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
+    # 根据初始化参数传入实现的产品类
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">implementation</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">implementation</span>
+    # 根据传入的产品类的属性打印结果
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">UseCase1</span><span class="p">:</span> &quot;<span class="p">,</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span><span class="p">.</span><span class="n">anotherFunctionality</span><span class="p">()</span>
+
+
+<span class="n">class</span> <span class="n">UseCase2</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">implementation</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span> <span class="p">=</span> <span class="n">implementation</span>
+
+    <span class="n">def</span> <span class="n">someFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">UseCase2</span><span class="p">:</span> &quot;<span class="p">,</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__implementation</span><span class="p">.</span><span class="n">anotherFunctionality</span><span class="p">()</span>
+
+
+<span class="n">class</span> <span class="n">ImplementationInterface</span><span class="p">:</span>
+
+    <span class="n">def</span> <span class="n">anotherFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplemented</span>
+
+# 这里其实才是实现的产品类
+<span class="n">class</span> <span class="n">Linux</span><span class="p">(</span><span class="n">ImplementationInterface</span><span class="p">):</span>
+
+    # 它定义了这个方法，回应操作系统的名字
+    <span class="n">def</span> <span class="n">anotherFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">Linux</span>!&quot;
+
+
+<span class="n">class</span> <span class="n">Windows</span><span class="p">(</span><span class="n">ImplementationInterface</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">anotherFunctionality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span> &quot;<span class="n">Windows</span><span class="p">.</span>&quot;
+
+
+<span class="n">def</span> <span class="n">main</span><span class="p">():</span>
+    <span class="n">linux</span> <span class="p">=</span> <span class="n">Linux</span><span class="p">()</span>
+    <span class="n">windows</span> <span class="p">=</span> <span class="n">Windows</span><span class="p">()</span>
+
+    <span class="n">useCase</span> <span class="p">=</span> <span class="n">UseCase1</span><span class="p">(</span><span class="n">linux</span><span class="p">)</span>
+    <span class="n">useCase</span><span class="p">.</span><span class="n">someFunctionality</span><span class="p">()</span>
+
+    <span class="n">useCase</span> <span class="p">=</span> <span class="n">UseCase1</span><span class="p">(</span><span class="n">windows</span><span class="p">)</span>
+    <span class="n">useCase</span><span class="p">.</span><span class="n">someFunctionality</span><span class="p">()</span>
+
+    <span class="n">useCase</span> <span class="p">=</span> <span class="n">UseCase2</span><span class="p">(</span><span class="n">linux</span><span class="p">)</span>
+    <span class="n">useCase</span><span class="p">.</span><span class="n">someFunctionality</span><span class="p">()</span>
+
+    <span class="n">useCase</span> <span class="p">=</span> <span class="n">UseCase2</span><span class="p">(</span><span class="n">windows</span><span class="p">)</span>
+    <span class="n">useCase</span><span class="p">.</span><span class="n">someFunctionality</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> &quot;<span class="n">__main__</span>&quot;<span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+        <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "python-bridge.html";
+        var disqus_url = "./python-bridge.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://sgithub.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="http://twitter.com/dongweiming">twitter</a></li>
+                                                    <li><a href="http://github.com/orzrd">github</a></li>
+                                                    <li><a href="http://github.com/dongweiming">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41346031-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'sgithub';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
