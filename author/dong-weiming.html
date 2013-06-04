@@ -1,49 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8">
         <title>小明明s Github - Dong Weiming</title>
-        <link rel="stylesheet" href="../theme/css/main.css">
-                <link href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
-                        <link href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="小明明s Github RSS Feed" />
-        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+                                    <link rel="stylesheet" href="http://dongweiming.github.io/theme/css/style.min.css">
+                <!--<link rel="stylesheet" href="http://dongweiming.github.io/theme/css/main.css" type="text/css" />-->
+                <link href="http://dongweiming.github.io/feeds/atom.xml" type="application/atom+xml" rel="alternate" title="小明明s Github Atom Feed" />
+                        <link rel="icon" href="http://dongweiming.github.io/favicon.ico">
+
         <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://dongweiming.github.io/css/ie.css"/>
+                <script src="http://dongweiming.github.io/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://dongweiming.github.io/css/ie6.css"/><![endif]-->
+
 </head>
 
 <body id="index" class="home">
-<a href="http://github.com/dongweiming/">
-<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
-</a>
+  <div id="main-wrapper1">
+  <div id="main-wrapper2">
+  <div id="main-container">
         <header id="banner" class="body">
-                <h1><a href="../">小明明s Github </a></h1>
-                <nav><ul>
-                                                                                    <li ><a href="../category/she-ji-mo-shi.html">设计模式</a></li>
-                                                </ul></nav>
-        </header><!-- /#banner -->
-                
-            
+                <h1><a href="http://dongweiming.github.io">小明明s Github </a></h1>
+                        </header><!-- /#banner -->
+        <section id="content">
+<h2>All articles</h2>
 
-                            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="../python-abstract-factory.html">python设计模式之抽象工厂模式</a></h1> 
-                    <footer class="post-info">
-        <abbr class="published" title="2013-05-18T00:00:00">
-                六 18 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info --><h2>抽象工厂模式</h2>
+<ol id="post-list">
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-abstract-factory.html" rel="bookmark" title="Permalink to python设计模式之抽象工厂模式">python设计模式之抽象工厂模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-18T00:00:00"> 星期六, 18 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>抽象工厂模式</h2>
 <p>和简单工厂/工厂方法不同，抽象工厂可能最好理解，举个例子: <br />
 <em> 比如2个动物，猫和狗，他们都有speak和eat的function，但是很明显他们执行的结果是不同的
-</em> 有个'工厂'(抽象工厂里面一个类型就是一个工厂,这点和其他模式的不同)专门帮助我们找到对应的动物做正确的操作
+</em> 有个&#8217;工厂&#8217;(抽象工厂里面一个类型就是一个工厂,这点和其他模式的不同)专门帮助我们找到对应的动物做正确的操作
 <em> 有个类/函数可以通过参数帮助我们找到上面的这个工厂
-</em> 这就是抽象工厂</p>
+</em>&nbsp;这就是抽象工厂</p>
 <h2>python的例子</h2>
 <div class="highlight"><pre><span class="n">from</span> <span class="n">abc</span> <span class="n">import</span> <span class="n">ABCMeta</span>
 
@@ -62,75 +61,16 @@
 
 <h1>这里帮助dog这个产品类找到应该的属性的工厂</h1>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">DogFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">get_pet</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Dog</span><span class="p">();</span>
-
-
-<span class="n">class</span> <span class="n">CatFactory</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    # 注意这个方法和上面的名字一样，但是返回的类不同，这就是工厂的作用
-    <span class="n">def</span> <span class="n">get_pet</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Cat</span><span class="p">();</span>
-
-
-# 可以认为<span class="n">dog</span>和<span class="nb">cat</span>都是动物的一种，可以有个基类
-<span class="n">class</span> <span class="n">Pet</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    # <span class="n">ABCMeta</span>会让这个类在注册后添加很多基础抽象基类，可以看<span class="p">[</span><span class="n">ABCMeta</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="p">.</span><span class="n">python</span><span class="p">.</span><span class="n">org</span><span class="o">/</span>2<span class="o">/</span><span class="n">library</span><span class="o">/</span><span class="n">abc</span><span class="p">.</span><span class="n">html</span>#<span class="n">abc</span><span class="p">.</span><span class="n">ABCMeta</span><span class="p">)</span>
-    <span class="n">__metaclass__</span> <span class="p">=</span> <span class="n">ABCMeta</span>
-    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">pass</span>
-
-
-# <span class="n">Dog</span>应该做什么就是这里
-<span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">Pet</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Dog food...&#39;</span>
-
-
-<span class="n">class</span> <span class="n">Cat</span><span class="p">(</span><span class="n">Pet</span><span class="p">):</span>
-    # 这里的<span class="n">eat</span>依然是同名，她们都是同样的操作，只是返回不同
-    <span class="n">def</span> <span class="n">eat</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Cat food...&#39;</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span>&quot;<span class="n">__main__</span>&quot;<span class="p">:</span>
-    <span class="n">factory</span> <span class="p">=</span> <span class="n">StandardFactory</span><span class="p">.</span><span class="n">get_factory</span><span class="p">(</span><span class="s">&#39;cat&#39;</span><span class="p">)</span>
-    <span class="n">pet</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">get_pet</span><span class="p">()</span>
-    <span class="n">print</span> <span class="n">pet</span><span class="p">.</span><span class="n">eat</span><span class="p">()</span>
-
-    # 注意这里，你只需要修改抽象工厂传入的那个参数，其他什么都不用改
-    <span class="n">factory</span> <span class="p">=</span> <span class="n">StandardFactory</span><span class="p">.</span><span class="n">get_factory</span><span class="p">(</span><span class="s">&#39;dog&#39;</span><span class="p">)</span>
-    <span class="n">pet</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">get_pet</span><span class="p">()</span>
-    <span class="n">print</span> <span class="n">pet</span><span class="p">.</span><span class="n">eat</span><span class="p">()</span>
-</pre></div><p>There are <a href="../python-abstract-factory.html#disqus_thread">comments</a>.</p>                </article>
-                            </aside><!-- /#featured -->
-                            <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-                                                
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../python-adapter.html" rel="bookmark"
-                           title="Permalink to python设计模式之Adapter模式">python设计模式之Adapter模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
+    <span class="n">def ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-adapter.html" rel="bookmark" title="Permalink to python设计模式之Adapter模式">python设计模式之Adapter模式</a></h2> </header>
                 <footer class="post-info">
-        <abbr class="published" title="2013-05-27T00:00:00">
-                一 27 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>适应模式</h2>
+                    <abbr class="published" title="2013-05-27T00:00:00"> 星期一, 27 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>适应模式</h2>
 <p>Adapter模式是一个很实用的模式，比如在<a href="http://grok.zope.org/doc/current/grok_overview.html#adapters">zope</a>中。
-以前说了抽象工厂模式，你会发现每个产品类的接口方法名都是一样的，比如eat，他们都要吃。这个Adapter模式的区别呢？
-各个产品类的操作不尽相同，但是怎么样兼容这些不一样的方法呢？举个能想到的例子，我们渐进的来理解</p>
+以前说了抽象工厂模式，你会发现每个产品类的接口方法名都是一样的，比如eat，他们都要吃。这个Adapter模式的区别呢？&nbsp;各个产品类的操作不尽相同，但是怎么样兼容这些不一样的方法呢？举个能想到的例子，我们渐进的来理解</p>
 <h2>想要通过不同的动物返回他们的声音和类型</h2>
 <p>我想很多人会这么写</p>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">Dog</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
@@ -145,34 +85,16 @@
 
 
 <p>但要是有很类型的动物，其它动物可不会bark(吠), 所以上面的bark这个方法名字就很不好，因为不够通用
-，好吧 我们换个名字make_noise, 这个时候Cat类出现，Adapter模式也第一次出现，为了兼容Dog</p>
-<div class="highlight"><pre><span class="n">class ...</span></pre></div>
-                <a class="readmore" href="../python-adapter.html">read more</a>
-                <p>There are <a href="../python-adapter.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../python-borg.html" rel="bookmark"
-                           title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
+，好吧 我们换个名字make_noise,&nbsp;这个时候Cat类出现，Adapter模式也第一次出现，为了兼容Dog</p>
+<div class="highlight"><pre><span class="n">class ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-borg.html" rel="bookmark" title="Permalink to python设计模式之Borg模式">python设计模式之Borg模式</a></h2> </header>
                 <footer class="post-info">
-        <abbr class="published" title="2013-05-26T00:00:00">
-                日 26 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>Borg模式</h2>
-<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don't need no stinkin' singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。
-为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
+                    <abbr class="published" title="2013-05-26T00:00:00"> 星期日, 26 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>Borg模式</h2>
+<p><a href="http://code.activestate.com">activestate</a>上面有篇文章<a href="http://code.activestate.com/recipes/66531/">Singleton? We don&#8217;t need no stinkin&#8217; singleton: the Borg design pattern</a>, 告诉我们Borg模式要比单例模式要好。&nbsp;为什么这样说：单例模式生成的单例一旦生成就一直存在，但是Borg确实和源共享的能修改</p>
 <h2>python的例子</h2>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">Config</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
     <span class="n">_we_are_one</span> <span class="p">=</span> <span class="p">{}</span>
@@ -185,33 +107,15 @@
 
     <span class="n">def</span> <span class="n">myvalue</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-        <span class="n">self ...</span></pre></div>
-                <a class="readmore" href="../python-borg.html">read more</a>
-                <p>There are <a href="../python-borg.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../python-bridge.html" rel="bookmark"
-                           title="Permalink to python设计模式之桥接模式">python设计模式之桥接模式</a></h1>
-                </header>
-                
-                <div class="entry-content">
+        <span class="n">self ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-bridge.html" rel="bookmark" title="Permalink to python设计模式之桥接模式">python设计模式之桥接模式</a></h2> </header>
                 <footer class="post-info">
-        <abbr class="published" title="2013-05-31T00:00:00">
-                五 31 五月 2013
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/dong-weiming.html">Dong Weiming</a>
-        </address>
-        <p>In <a href="../category/she-ji-mo-shi.html">设计模式</a>. </p>
-<p>tags: <a href="../tag/design-patterns.html">Design Patterns</a></p>
-</footer><!-- /.post-info -->                <h2>桥接模式</h2>
-<p>这个模式其实就是把产品类的实现和抽象类分离，能够灵活的变化，假如你记得<a href="http://dongweiming.github.io/python-state.html">状态模式</a>,它是修改内部属性，
-而桥接模式是指定好内部属性，每个产品类指定这个属性被桥接模式类调用，适用于产品类可能经常调整变化，这样还能减少了产品类之间的耦合</p>
+                    <abbr class="published" title="2013-05-31T00:00:00"> 星期五, 31 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>桥接模式</h2>
+<p>这个模式其实就是把产品类的实现和抽象类分离，能够灵活的变化，假如你记得<a href="http://dongweiming.github.io/python-state.html">状态模式</a>,它是修改内部属性，&nbsp;而桥接模式是指定好内部属性，每个产品类指定这个属性被桥接模式类调用，适用于产品类可能经常调整变化，这样还能减少了产品类之间的耦合</p>
 <h2>python的例子</h2>
 <p>这里实现一个打印操作系统名字的功能 </p>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">Bridge</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
@@ -233,62 +137,187 @@
 
 
 <span class="n">class</span> <span class="n">UseCase2</span><span class="p">(</span><span class="n">Bridge</span><span class="p">):</span>
-    <span class="n">def ...</span></pre></div>
-                <a class="readmore" href="../python-bridge.html">read more</a>
-                <p>There are <a href="../python-bridge.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            </ol><!-- /#posts-list -->
-                            <p class="paginator">
-        Page 1 / 4
-            <a href="../author/dong-weiming2.html">&raquo;</a>
+    <span class="n">def ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-builder.html" rel="bookmark" title="Permalink to python设计模式之Builder模式">python设计模式之Builder模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-27T00:00:00"> 星期一, 27 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>Builder模式</h2>
+<p>Builder模式帮你把一个不同类的大工程分开成不同的部分，最后在把这些合并起来</p>
+<h2>python的例子</h2>
+<p>制造一辆车的工序是很繁琐和浩大的，我们可以定一个车辆的描述</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Vehicle</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="p">=</span> <span class="n">type_name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> <span class="n">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> <span class="n">None</span>
+
+    # 不同的车子类型，齿轮，车门数，座位数都不尽相同
+    <span class="n">def</span> <span class="n">view</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">print</span><span class="p">(</span>
+            &quot;<span class="n">This</span> <span class="n">vehicle</span> <span class="n">is</span> <span class="n">a</span> &quot; <span class="o">+</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="o">+</span>
+            &quot; <span class="n">with</span><span class="p">;</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">wheels</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">wheels</span><span class="p">,</span> &quot; <span class="o">+</span>
+            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">+</span>
+            &quot; <span class="n">doors</span><span class="p">,</span> <span class="n">and</span> &quot; <span class="o">+</span>
+            <span class="n">str ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-chain.html" rel="bookmark" title="Permalink to python设计模式之责任链模式">python设计模式之责任链模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-28T00:00:00"> 星期二, 28 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>责任链模式</h2>
+<p>比如我们还在读书的时候，考试的分数都是几个档次，比如90-100分，80-90分，好吧我想做一个根据分数打印你的学习成绩的反馈，
+比如90-100就是A+，80-90就是A，70-80就是B+&#8230; 当然你可以用很多种方法实现，我这里就来实现一个Chain模式:用一系列的类来响应，&nbsp;但只有遇到适合处理它的类才会处理，类似与case和switch的作用</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">BaseHandler</span><span class="p">:</span>
+    # 它起到了链的作用
+    <span class="n">def</span> <span class="n">successor</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">successor</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">successor</span> <span class="p">=</span> <span class="n">successor</span>
+
+<span class="n">class</span> <span class="n">ScoreHandler1</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">handle</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span> <span class="o">&gt;</span> 90 <span class="n">and</span> <span class="n">request</span> <span class="o">&lt;</span><span class="p">=</span> 100<span class="p">:</span>
+            <span class="k">return</span> &quot;<span class="n">A</span><span class="o">+</span>&quot;
+        <span class="k">else</span><span class="p">:</span>
+            # 否则传给下一个链，下同，但是我是要<span class="k">return</span>回结果的
+            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">successor</span><span class="p">.</span><span class="n">handle ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-command.html" rel="bookmark" title="Permalink to python设计模式之命令调度模式">python设计模式之命令调度模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-18T00:00:00"> 星期六, 18 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>命令调度模式</h2>
+<p>设想一个问题，假如你经常搞web框架，你知道<span class="caps">GET</span>/<span class="caps">POST</span>/<span class="caps">PUT</span>/<span class="caps">DELETE</span>，当你想确定使用那种方式工作你需要大概这样:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;get&#39;</span><span class="p">:</span>
+    <span class="n">get</span><span class="p">()</span>
+<span class="n">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;put&#39;</span><span class="p">:</span>
+    <span class="n">put</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">error</span><span class="p">()</span>
+</pre></div>
+
+
+<p>抑或写一个字典作为调度的方式：</p>
+<div class="highlight"><pre><span class="n">dispatch_table</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="n">get</span><span class="p">,</span>
+    <span class="s">&#39;put&#39;</span><span class="p">:</span> <span class="n">put</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="n">dispatch_table</span><span class="p">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="n">func</span> <span class="p">=</span> <span class="n">dispatch_table</span><span class="p">[</span><span class="n">command</span><span class="p">]</span>
+    <span class="n">func</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">error</span><span class="p">()</span>
+</pre></div>
+
+
+<p>其实呢？python已经自带了很多这样的功能的东西，Guido van Rossum把这个模式叫做Command&nbsp;Dispatch</p>
+<p>喏&nbsp;这就是,只是你没有意识到</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">greet</span><span class="p">(</span><span class="n">who</span><span class="p">):</span>
+    <span class="n">print</span> &quot;<span class="n">Hello</span> <span class="c">%s ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-composite.html" rel="bookmark" title="Permalink to python设计模式之组合模式">python设计模式之组合模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-29T00:00:00"> 星期三, 29 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>组合模式</h2>
+<p>我们把Composite模式看成一个复杂的属性结构，其实基本有三种角色：树干（定义一些操作树叶leaf的操作），树枝(树干上有很多树枝)和树叶（树干想要具体操作的对象）&nbsp;，Composite模式帮我们实现：即它们在充当对象的时候，还是其他对象的容易，从而提供一致性</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Trunk</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="s">&#39;&#39;&#39;树干&#39;&#39;&#39;</span>
+    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">pass</span>
+
+    <span class="n">def</span> <span class="n">subtree</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">pass</span>
+
+<span class="n">class</span> <span class="n">Composite</span><span class="p">(</span><span class="n">Trunk</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">left</span><span class="p">=</span><span class="n">None</span><span class="p">,</span> <span class="n">right</span><span class="p">=</span><span class="n">None</span><span class="p">,</span> <span class="nb">length</span><span class="p">=</span><span class="n">None</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">=</span><span class="n">left</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">=</span><span class="n">right</span>
+        <span class="n">self</span><span class="p">.</span><span class="nb">length</span><span class="p">=</span><span class="nb">length</span>
+
+    <span class="n">def</span> <span class="n">__str__</span><span class="p">(</span><span class="n">self ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+</ol><!-- /#posts-list -->
+<p class="paginator">
+        Page 1 / 2
+            <a href="http://dongweiming.github.io/author/dong-weiming2.html">&raquo;</a>
     </p>
-                        </section><!-- /#content -->
-                    <section id="extras" class="body">
+</section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="links">
+                  <h2><a href="http://dongweiming.github.io">here</a></h2>
+                  <ul>
+                                                                                    <li><a href="http://dongweiming.github.io/archives.html">归档</a> &amp; <a href="http://dongweiming.github.io/categories.html">分类</a></li>
+                                                    <li><a href="http://dongweiming.github.io/category/she-ji-mo-shi.html">类别: 设计模式</a></li>
+                                                    </ul>
+                </div>
                         <div class="blogroll">
-                        <h2>blogroll</h2>
+                        <h2>博客链接</h2>
                         <ul>
                                                     <li><a href="http://www.dongwm.com">小明明s à domicile</a></li>
                                                 </ul>
                 </div><!-- /.blogroll -->
                                 <div class="social">
-                        <h2>social</h2>
+                        <h2>我在这里</h2>
                         <ul>
-                            <li><a href="http://dongweiming.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
-                                                        <li><a href="http://dongweiming.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            <li><a href="http://dongweiming.github.io/feeds/atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
                             
                                                     <li><a href="http://twitter.com/dongweiming">twitter</a></li>
                                                     <li><a href="http://github.com/orzrd">github</a></li>
                                                     <li><a href="http://github.com/dongweiming">github</a></li>
                                                 </ul>
                 </div><!-- /.social -->
-                </section><!-- /#extras -->
+                        <div class="archives">
+                  <h2><a href="http://dongweiming.github.io/">最近发表</a></h2>
+                  <ul>
+                                        <li><a href="http://dongweiming.github.io/python-null.html">python设计模式之Null模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-bridge.html">python设计模式之桥接模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-composite.html">python设计模式之组合模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-chain.html">python设计模式之责任链模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-facade.html">python设计模式之外观模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-pototype.html">python设计模式之原型模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-adapter.html">python设计模式之Adapter模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-builder.html">python设计模式之Builder模式</a></li>
+                                      </ul>
+                </div><!-- /.archives -->
+
+                <div class="widgets">
+                  <h2><a href="https://twitter.com/dongweiming">tweets</a></h2>
+                  <a class="twitter-timeline" width="230" height="500" href="https://twitter.com/dongweiming" data-widget-id="319849964417187842" data-link-color="#aaae94">Tweets by @dongweiming</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+                </div><!-- /.widgets -->
+
+        </section><!-- /#extras -->
 
         <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
                 Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme Modified from <a href="http://www.ianbicking.org">Ian Bicking</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
     <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-41346031-1']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
-<script type="text/javascript">
-    var disqus_shortname = 'sgithub';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-41346031-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+        </div><!-- /#main-container -->
+        </div><!-- /#main-wrapper2 -->
+        </div><!-- /#main-wrapper1 -->
 </body>
 </html>
