@@ -82,13 +82,8 @@ ftp_upload: publish
 s3_upload: publish
 	s3cmd sync $(OUTPUTDIR)/ s3://$(S3_BUCKET) --acl-public --delete-removed
 
-#github: publish
-#	ghp-import $(OUTPUTDIR)
-#	git push origin gh-pages
-
 local:
 	./regen -q
-#github: html
 github: 
 	./regen
 	ghp-import -b master $(OUTPUTDIR)
