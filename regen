@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+quiet=""
+output="output"
+if [ "$1" = "-q" ] ; then
+    shift
+    quiet="1"
+    output="output-local"
+    export OVERRIDE_SITEURL=http://localhost:8000
+fi
+
+echo -n "regenerating..."
+pelican content/ -o $output -s pelicanconf.py "$@"
+echo done.
+

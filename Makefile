@@ -86,7 +86,11 @@ s3_upload: publish
 #	ghp-import $(OUTPUTDIR)
 #	git push origin gh-pages
 
-github: html
+local:
+	./regen -q
+#github: html
+github: 
+	./regen
 	ghp-import -b master $(OUTPUTDIR)
 	git push origin gh-pages:gh-pages 
 	git push origin master:master
