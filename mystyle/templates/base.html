@@ -45,7 +45,7 @@
         {% endblock %}
         <section id="extras" class="body">
                 <div class="links">
-                  <h2><a href="{{ SITEURL }}">here</a></h2>
+                  <h2><a href="{{ SITEURL }}">本站</a></h2>
                   <ul>
                 {% for title, link in MENUITEMS %}
                     <li><a href="{{ link }}">{{ title }}</a></li>
@@ -55,7 +55,7 @@
                     <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
                 {% endif %}
-                    <li><a href="{{ SITEURL }}/archives.html">归档</a> &amp; <a href="{{ SITEURL }}/categories.html">分类</a></li>
+                    <li><a href="{{ SITEURL }}/archives.html">归档</a></li>
                 {% block category %}
                 {% for cat, null in categories %}
                     <li><a href="{{ SITEURL }}/{{ cat.url }}">类别: {{ cat }}</a></li>
