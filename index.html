@@ -33,6 +33,29 @@
 
 <ol id="post-list">
         <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-object-pool.html" rel="bookmark" title="Permalink to python设计模式之对象池模式">python设计模式之对象池模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-06-05T00:00:00"> 星期三, 05 六月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>对象池模式</h2>
+<p>在开发中，我们总是用到一些和&#8217;池&#8217;相关的东西，比如 内存池，连接池，对象池，线程池..
+这里说的对象池其实也就是一定数量已经创建好的对象的集合。为什么要用对象池？
+创建对象是要付出代价的(我暂时还没有研究过底层，只说我工作中体会的)，&nbsp;比如pymongo就自带线程池，这样用完就放回到池里再被重用，岂不是节省了创建的花费？</p>
+<h2>python的例子</h2>
+<p>我这里实现了个线程安全的简单的对象池</p>
+<div class="highlight"><pre><span class="n">import</span> <span class="n">Queue</span>
+<span class="n">import</span> <span class="n">types</span>
+<span class="n">import</span> <span class="n">threading</span>
+<span class="n">from</span> <span class="n">contextlib</span> <span class="n">import</span> <span class="n">contextmanager</span>
+
+<span class="n">class</span> <span class="n">ObjectPool</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">fn_cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">super</span><span class="p">(</span><span class="n">ObjectPool</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">fn_cls</span> <span class="p">=</span> <span class="n">fn_cls</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_myinit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
                 <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-null.html" rel="bookmark" title="Permalink to python设计模式之Null模式">python设计模式之Null模式</a></h2> </header>
                 <footer class="post-info">
                     <abbr class="published" title="2013-06-01T00:00:00"> 星期六, 01 六月, 2013 </abbr>
@@ -211,46 +234,17 @@
 ，好吧 我们换个名字make_noise,&nbsp;这个时候Cat类出现，Adapter模式也第一次出现，为了兼容Dog</p>
 <div class="highlight"><pre><span class="n">class ...</span></pre></div> </div><!-- /.entry-content -->
         </article></li>
-        <li><article class="hentry">
-                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-builder.html" rel="bookmark" title="Permalink to python设计模式之Builder模式">python设计模式之Builder模式</a></h2> </header>
-                <footer class="post-info">
-                    <abbr class="published" title="2013-05-27T00:00:00"> 星期一, 27 五月, 2013 </abbr>
-                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
-                <div class="entry-content"> <h2>Builder模式</h2>
-<p>Builder模式帮你把一个不同类的大工程分开成不同的部分，最后在把这些合并起来</p>
-<h2>python的例子</h2>
-<p>制造一辆车的工序是很繁琐和浩大的，我们可以定一个车辆的描述</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Vehicle</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="p">=</span> <span class="n">type_name</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">wheels</span> <span class="p">=</span> <span class="n">None</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">doors</span> <span class="p">=</span> <span class="n">None</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">seats</span> <span class="p">=</span> <span class="n">None</span>
-
-    # 不同的车子类型，齿轮，车门数，座位数都不尽相同
-    <span class="n">def</span> <span class="n">view</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span><span class="p">(</span>
-            &quot;<span class="n">This</span> <span class="n">vehicle</span> <span class="n">is</span> <span class="n">a</span> &quot; <span class="o">+</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">type</span> <span class="o">+</span>
-            &quot; <span class="n">with</span><span class="p">;</span> &quot; <span class="o">+</span>
-            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">wheels</span><span class="p">)</span> <span class="o">+</span>
-            &quot; <span class="n">wheels</span><span class="p">,</span> &quot; <span class="o">+</span>
-            <span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">+</span>
-            &quot; <span class="n">doors</span><span class="p">,</span> <span class="n">and</span> &quot; <span class="o">+</span>
-            <span class="n">str ...</span></pre></div> </div><!-- /.entry-content -->
-        </article></li>
 </ol><!-- /#posts-list -->
 <p class="paginator">
-        Page 1 / 2
+        Page 1 / 3
             <a href="http://dongweiming.github.io/index2.html">&raquo;</a>
     </p>
 </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="links">
-                  <h2><a href="http://dongweiming.github.io">here</a></h2>
+                  <h2><a href="http://dongweiming.github.io">本站</a></h2>
                   <ul>
-                                                                                    <li><a href="http://dongweiming.github.io/archives.html">归档</a> &amp; <a href="http://dongweiming.github.io/categories.html">分类</a></li>
+                                                                                    <li><a href="http://dongweiming.github.io/archives.html">归档</a></li>
                                                     <li><a href="http://dongweiming.github.io/category/she-ji-mo-shi.html">类别: 设计模式</a></li>
                                                     </ul>
                 </div>
@@ -273,6 +267,7 @@
                         <div class="archives">
                   <h2><a href="http://dongweiming.github.io/">最近发表</a></h2>
                   <ul>
+                                        <li><a href="http://dongweiming.github.io/python-object-pool.html">python设计模式之对象池模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-null.html">python设计模式之Null模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-bridge.html">python设计模式之桥接模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-composite.html">python设计模式之组合模式</a></li>
@@ -280,7 +275,6 @@
                                         <li><a href="http://dongweiming.github.io/python-facade.html">python设计模式之外观模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-pototype.html">python设计模式之原型模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-adapter.html">python设计模式之Adapter模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-builder.html">python设计模式之Builder模式</a></li>
                                       </ul>
                 </div><!-- /.archives -->
 

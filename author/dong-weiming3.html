@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>python设计模式之原型模式</title>
+        <title>小明明s Github - Dong Weiming</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
                                     <link rel="stylesheet" href="http://dongweiming.github.io/theme/css/style.min.css">
@@ -28,65 +28,33 @@
         <header id="banner" class="body">
                 <h1><a href="http://dongweiming.github.io">小明明s Github </a></h1>
                         </header><!-- /#banner -->
-        <section id="content" class="body">
-  <article>
-    <header>
-      <abbr class="published" title="2013-05-28T00:00:00">
-        Tuesday, May 28th, 2013
-      </abbr>
-      <h1 class="entry-title">
-        <a href="http://dongweiming.github.io/python-pototype.html" rel="bookmark"
-           title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h1>
-          </header>
+        <section id="content">
+<h2>All articles</h2>
 
-    <div class="entry-content">
-      <h2>Pototype模式</h2>
-<p>假如你爱玩游戏，你能想到游戏里面有很多的角色，但是其实你有没有注意:脸型，身材，眼睛..这些其实都是略有不同的搭配，&nbsp;这也就是原型的作用：不需要你每次都制造一个复杂的人物，只是根据一个原型的人物做些简单的修改即可</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="c"># 这里肯定要做深拷贝，要不然python的就是对象的引用</span>
-<span class="n">from</span> <span class="n">copy</span> <span class="n">import</span> <span class="n">deepcopy</span>
+<ol id="post-list">
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-strategy.html" rel="bookmark" title="Permalink to python设计模式之策略模式">python设计模式之策略模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-18T00:00:00"> 星期六, 18 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>策略模式</h2>
+<p>Strategy 模式和抽象工厂可能最难分辨，抽象工厂帮助我们根据我们的参数找到对应的操作工厂，而每个操作工厂提供了相同的接口函数
+操作工厂所以可能是从一个基类继承的不同实现，举个例子，有个鸭子的基类，然后有很多品种的鸭子是不同的操作工厂，本来根据抽象工厂会返回这个操作工厂来获得这个特定的鸭子的类型，比如一个fly的方法，问题出现了：&nbsp;有些鸭子会飞，有些不会飞。在实际中有Mixin的角度，但是我们经常能看见这样的实现：</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Duck</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+    # 明确不能直接访问基类的这个方法，他们是具体类去实现
+    # <span class="n">kind</span> 标识能不能飞<span class="p">,</span> 可以设置<span class="n">yes</span>和<span class="n">no</span>
+    <span class="n">def</span> <span class="n">fly</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+        <span class="n">raise</span> <span class="n">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Exception raised, Duck is supposed to be an interface / abstract class!&#39;</span><span class="p">)</span>
 
-<span class="nb">class</span> <span class="n">Prototype</span><span class="p">:</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span> <span class="p">=</span> <span class="p">{}</span>
-
-    <span class="n">def</span> <span class="n">registerObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;注册对象&quot;&quot;&quot;</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="p">=</span> <span class="n">obj</span>
-
-    <span class="n">def</span> <span class="n">unregisterObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;取消注册&quot;&quot;&quot;</span>
-        <span class="n">del</span> <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-    <span class="n">def</span> <span class="n">clone</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;克隆对象&quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="p">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-        <span class="c"># 但是会根据attr增加或覆盖原对象的属性</span>
-        <span class="n">obj</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="nb">class</span> <span class="n">A</span><span class="p">:</span>
-        <span class="n">pass</span>
-
-    <span class="n">a</span><span class="p">=</span><span class="n">A</span><span class="p">()</span>
-    <span class="n">prototype</span><span class="p">=</span><span class="n">Prototype</span><span class="p">()</span>
-    <span class="n">prototype</span><span class="p">.</span><span class="n">registerObject</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">b</span><span class="p">=</span><span class="n">prototype</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">=</span>1<span class="p">,</span><span class="n">b</span><span class="p">=</span>2<span class="p">,</span><span class="n">c</span><span class="p">=</span>3<span class="p">)</span>
-
-    <span class="c"># 这里会返回对象a</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="c"># 这里的对象其实已经被修改成(1, 2, 3)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">c</span><span class="p">)</span>
-</pre></div>
-    </div><!-- /.entry-content -->
-    <!-- UY BEGIN -->                                                          
-    <div id="uyan_frame"></div>                                                
-    <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1788025" async=""></script>
-    <!-- UY END -->
-
-  </article>
-</section>
+<span class="n">class</span> <span class="n">Duck1</span><span class="p">(</span><span class="n">Duck</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">fly</span><span class="p">(</span><span class="n">selfi ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+</ol><!-- /#posts-list -->
+<p class="paginator">
+                        <a href="http://dongweiming.github.io/author/dong-weiming2.html">&laquo;</a>
+                Page 3 / 3
+    </p>
+</section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="links">
                   <h2><a href="http://dongweiming.github.io">本站</a></h2>

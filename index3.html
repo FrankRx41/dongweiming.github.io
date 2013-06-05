@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>python设计模式之原型模式</title>
+        <title>小明明s Github</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
                                     <link rel="stylesheet" href="http://dongweiming.github.io/theme/css/style.min.css">
@@ -28,65 +28,46 @@
         <header id="banner" class="body">
                 <h1><a href="http://dongweiming.github.io">小明明s Github </a></h1>
                         </header><!-- /#banner -->
-        <section id="content" class="body">
-  <article>
-    <header>
-      <abbr class="published" title="2013-05-28T00:00:00">
-        Tuesday, May 28th, 2013
-      </abbr>
-      <h1 class="entry-title">
-        <a href="http://dongweiming.github.io/python-pototype.html" rel="bookmark"
-           title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h1>
-          </header>
+        <section id="content">
+<h2>All articles</h2>
 
-    <div class="entry-content">
-      <h2>Pototype模式</h2>
-<p>假如你爱玩游戏，你能想到游戏里面有很多的角色，但是其实你有没有注意:脸型，身材，眼睛..这些其实都是略有不同的搭配，&nbsp;这也就是原型的作用：不需要你每次都制造一个复杂的人物，只是根据一个原型的人物做些简单的修改即可</p>
+<ol id="post-list">
+        <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-singleton.html" rel="bookmark" title="Permalink to python设计模式之单例模式">python设计模式之单例模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-05-16T00:00:00"> 星期四, 16 五月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>单例模式</h2>
+<p>通过Singleton模式，全局保证只有一个实例，在python中怎么用呢？</p>
 <h2>python的例子</h2>
-<div class="highlight"><pre><span class="c"># 这里肯定要做深拷贝，要不然python的就是对象的引用</span>
-<span class="n">from</span> <span class="n">copy</span> <span class="n">import</span> <span class="n">deepcopy</span>
-
-<span class="nb">class</span> <span class="n">Prototype</span><span class="p">:</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span> <span class="p">=</span> <span class="p">{}</span>
-
-    <span class="n">def</span> <span class="n">registerObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;注册对象&quot;&quot;&quot;</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="p">=</span> <span class="n">obj</span>
-
-    <span class="n">def</span> <span class="n">unregisterObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;取消注册&quot;&quot;&quot;</span>
-        <span class="n">del</span> <span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-    <span class="n">def</span> <span class="n">clone</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="s">&quot;&quot;&quot;克隆对象&quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="p">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-        <span class="c"># 但是会根据attr增加或覆盖原对象的属性</span>
-        <span class="n">obj</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="nb">class</span> <span class="n">A</span><span class="p">:</span>
-        <span class="n">pass</span>
-
-    <span class="n">a</span><span class="p">=</span><span class="n">A</span><span class="p">()</span>
-    <span class="n">prototype</span><span class="p">=</span><span class="n">Prototype</span><span class="p">()</span>
-    <span class="n">prototype</span><span class="p">.</span><span class="n">registerObject</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">b</span><span class="p">=</span><span class="n">prototype</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">=</span>1<span class="p">,</span><span class="n">b</span><span class="p">=</span>2<span class="p">,</span><span class="n">c</span><span class="p">=</span>3<span class="p">)</span>
-
-    <span class="c"># 这里会返回对象a</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="c"># 这里的对象其实已经被修改成(1, 2, 3)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">c</span><span class="p">)</span>
+<p>我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">ConnectionSingleton</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="s">&#39;&#39;&#39;通过重载实例化函数__new__缓存mongodb连接&#39;&#39;&#39;</span>
+    <span class="n">conn</span><span class="p">=</span><span class="n">None</span>
+    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span> <span class="n">is</span> <span class="n">None</span><span class="p">:</span>
+            <span class="n">cls</span><span class="p">.</span><span class="n">conn</span><span class="p">=</span><span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span>
 </pre></div>
-    </div><!-- /.entry-content -->
-    <!-- UY BEGIN -->                                                          
-    <div id="uyan_frame"></div>                                                
-    <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1788025" async=""></script>
-    <!-- UY END -->
 
-  </article>
-</section>
+
+<p>调用的时候可以</p>
+<div class="highlight"><pre><span class="n">db</span> <span class="p">=</span> <span class="n">ConnectionSingleton</span><span class="p">()</span>
+</pre></div>
+
+
+<h2>和pymongo相关的温馨提示</h2>
+<ol>
+<li>请不要使用pymongo.Connection，官网不推荐，并且有个问题，当你close它的实例，连接数并没有立刻减少</li>
+<li>做好数据库操作的类变量的封装，调用完毕要显式close/disconnect</li>
+</ol> </div><!-- /.entry-content -->
+        </article></li>
+</ol><!-- /#posts-list -->
+<p class="paginator">
+                        <a href="http://dongweiming.github.io/index2.html">&laquo;</a>
+                Page 3 / 3
+    </p>
+</section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="links">
                   <h2><a href="http://dongweiming.github.io">本站</a></h2>

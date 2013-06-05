@@ -128,6 +128,29 @@
     <span class="n">test</span> <span class="p">=</span> <span class="n">get_test ...</span></pre></div> </div><!-- /.entry-content -->
         </article></li>
         <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-object-pool.html" rel="bookmark" title="Permalink to python设计模式之对象池模式">python设计模式之对象池模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-06-05T00:00:00"> 星期三, 05 六月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>对象池模式</h2>
+<p>在开发中，我们总是用到一些和&#8217;池&#8217;相关的东西，比如 内存池，连接池，对象池，线程池..
+这里说的对象池其实也就是一定数量已经创建好的对象的集合。为什么要用对象池？
+创建对象是要付出代价的(我暂时还没有研究过底层，只说我工作中体会的)，&nbsp;比如pymongo就自带线程池，这样用完就放回到池里再被重用，岂不是节省了创建的花费？</p>
+<h2>python的例子</h2>
+<p>我这里实现了个线程安全的简单的对象池</p>
+<div class="highlight"><pre><span class="n">import</span> <span class="n">Queue</span>
+<span class="n">import</span> <span class="n">types</span>
+<span class="n">import</span> <span class="n">threading</span>
+<span class="n">from</span> <span class="n">contextlib</span> <span class="n">import</span> <span class="n">contextmanager</span>
+
+<span class="n">class</span> <span class="n">ObjectPool</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">fn_cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">super</span><span class="p">(</span><span class="n">ObjectPool</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">fn_cls</span> <span class="p">=</span> <span class="n">fn_cls</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_myinit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
                 <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-pototype.html" rel="bookmark" title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h2> </header>
                 <footer class="post-info">
                     <abbr class="published" title="2013-05-28T00:00:00"> 星期二, 28 五月, 2013 </abbr>
@@ -215,34 +238,18 @@
     <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
         <span class="n">print ...</span></pre></div> </div><!-- /.entry-content -->
         </article></li>
-        <li><article class="hentry">
-                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-strategy.html" rel="bookmark" title="Permalink to python设计模式之策略模式">python设计模式之策略模式</a></h2> </header>
-                <footer class="post-info">
-                    <abbr class="published" title="2013-05-18T00:00:00"> 星期六, 18 五月, 2013 </abbr>
-                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
-                <div class="entry-content"> <h2>策略模式</h2>
-<p>Strategy 模式和抽象工厂可能最难分辨，抽象工厂帮助我们根据我们的参数找到对应的操作工厂，而每个操作工厂提供了相同的接口函数
-操作工厂所以可能是从一个基类继承的不同实现，举个例子，有个鸭子的基类，然后有很多品种的鸭子是不同的操作工厂，本来根据抽象工厂会返回这个操作工厂来获得这个特定的鸭子的类型，比如一个fly的方法，问题出现了：&nbsp;有些鸭子会飞，有些不会飞。在实际中有Mixin的角度，但是我们经常能看见这样的实现：</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Duck</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
-    # 明确不能直接访问基类的这个方法，他们是具体类去实现
-    # <span class="n">kind</span> 标识能不能飞<span class="p">,</span> 可以设置<span class="n">yes</span>和<span class="n">no</span>
-    <span class="n">def</span> <span class="n">fly</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
-        <span class="n">raise</span> <span class="n">NotImplementedError</span><span class="p">(</span><span class="s">&#39;Exception raised, Duck is supposed to be an interface / abstract class!&#39;</span><span class="p">)</span>
-
-<span class="n">class</span> <span class="n">Duck1</span><span class="p">(</span><span class="n">Duck</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">fly</span><span class="p">(</span><span class="n">selfi ...</span></pre></div> </div><!-- /.entry-content -->
-        </article></li>
 </ol><!-- /#posts-list -->
 <p class="paginator">
                         <a href="http://dongweiming.github.io/author/dong-weiming.html">&laquo;</a>
-                Page 2 / 2
+                Page 2 / 3
+            <a href="http://dongweiming.github.io/author/dong-weiming3.html">&raquo;</a>
     </p>
 </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="links">
-                  <h2><a href="http://dongweiming.github.io">here</a></h2>
+                  <h2><a href="http://dongweiming.github.io">本站</a></h2>
                   <ul>
-                                                                                    <li><a href="http://dongweiming.github.io/archives.html">归档</a> &amp; <a href="http://dongweiming.github.io/categories.html">分类</a></li>
+                                                                                    <li><a href="http://dongweiming.github.io/archives.html">归档</a></li>
                                                     <li><a href="http://dongweiming.github.io/category/she-ji-mo-shi.html">类别: 设计模式</a></li>
                                                     </ul>
                 </div>
@@ -265,6 +272,7 @@
                         <div class="archives">
                   <h2><a href="http://dongweiming.github.io/">最近发表</a></h2>
                   <ul>
+                                        <li><a href="http://dongweiming.github.io/python-object-pool.html">python设计模式之对象池模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-null.html">python设计模式之Null模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-bridge.html">python设计模式之桥接模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-composite.html">python设计模式之组合模式</a></li>
@@ -272,7 +280,6 @@
                                         <li><a href="http://dongweiming.github.io/python-facade.html">python设计模式之外观模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-pototype.html">python设计模式之原型模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-adapter.html">python设计模式之Adapter模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-builder.html">python设计模式之Builder模式</a></li>
                                       </ul>
                 </div><!-- /.archives -->
 
