@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>python设计模式之外观模式</title>
+        <title>python设计模式之代理模式</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
                                     <link rel="stylesheet" href="http://dongweiming.github.io/theme/css/style.min.css">
@@ -31,51 +31,51 @@
         <section id="content" class="body">
   <article>
     <header>
-      <abbr class="published" title="2013-05-28T00:00:00">
-        Tuesday, May 28th, 2013
+      <abbr class="published" title="2013-06-05T00:00:00">
+        Wednesday, June 5th, 2013
       </abbr>
       <h1 class="entry-title">
-        <a href="http://dongweiming.github.io/python-facade.html" rel="bookmark"
-           title="Permalink to python设计模式之外观模式">python设计模式之外观模式</a></h1>
+        <a href="http://dongweiming.github.io/python-proxy.html" rel="bookmark"
+           title="Permalink to python设计模式之代理模式">python设计模式之代理模式</a></h1>
           </header>
 
     <div class="entry-content">
-      <h2>外观模式</h2>
-<p>Facade模式其实就是把一些工作接口，根据一定的组合提供一些接口，比如你有1,2,3,4四种功能，你提供的接口一调用了123,接口二调用了124,接口三调用了34,这样的方式</p>
+      <h2>代理模式</h2>
+<p>Proxy模式是一种常用的设计模式，它主要用来通过一个对象(比如B)给一个对象(比如A)&nbsp;提供&#8217;代理&#8217;的方式方式访问。比如一个对象不方便直接引用，代理就在这个对象和访问者之间做了中介</p>
 <h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Test1</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 1 ######&quot;
+<p>你先设想：一个对象提供rgb三种颜色值，我想获得一个对象的rgb三种颜色，但是我不想让你获得蓝色属性，怎么办？</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__subject</span> <span class="p">=</span> <span class="n">subject</span>
+    # 代理其实本质上就是属性的委托
+    <span class="n">def</span> <span class="n">__getattr__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">getattr</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">__subject</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<span class="n">class</span> <span class="n">Test2</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 2 ######&quot;
+<span class="n">class</span> <span class="n"><span class="caps">RGB</span></span><span class="p">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__red</span> <span class="p">=</span> <span class="n">red</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__green</span> <span class="p">=</span> <span class="n">green</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__blue</span> <span class="p">=</span> <span class="n">blue</span>
+    <span class="n">def</span> <span class="n">Red</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__red</span>
+    <span class="n">def</span> <span class="n">Green</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__green</span>
+    <span class="n">def</span> <span class="n">Blue</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">__blue</span>
 
-<span class="n">class</span> <span class="n">Test3</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
-        <span class="n">print</span> &quot;###### <span class="n">In</span> <span class="n">Test</span> 3 ######&quot;
-
-<span class="n">class</span> <span class="n">Runner</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">t1</span> <span class="p">=</span> <span class="n">Test1</span><span class="p">()</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">t2</span> <span class="p">=</span> <span class="n">Test2</span><span class="p">()</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">t3</span> <span class="p">=</span> <span class="n">Test3</span><span class="p">()</span>
-
-    <span class="n">def</span> <span class="n">build_up1</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="p">[</span><span class="nb">i</span><span class="p">.</span><span class="n">run</span><span class="p">()</span> <span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">t1</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">t3</span><span class="p">]]</span>
-
-    <span class="n">def</span> <span class="n">build_up2</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="p">[</span><span class="nb">i</span><span class="p">.</span><span class="n">run</span><span class="p">()</span> <span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">t3</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">t2</span><span class="p">]]</span>
-
-    <span class="n">def</span> <span class="n">build_up3</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="p">[</span><span class="nb">i</span><span class="p">.</span><span class="n">run</span><span class="p">()</span> <span class="k">for</span> <span class="nb">i</span> <span class="n">in</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">t3</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">t2</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">t1</span><span class="p">]]</span>
+<span class="n">class</span> <span class="n">NoBlueProxy</span><span class="p">(</span><span class="n">Proxy</span><span class="p">):</span>
+    # 我在这个子代理类拦截了<span class="n">blue</span>的访问，这样就不会返回被代理的类的<span class="n">Blue</span>属性
+    <span class="n">def</span> <span class="n">Blue</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> 0
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span> <span class="p">=</span> <span class="n">Runner</span><span class="p">()</span>
-    # 不同的组合
-    <span class="n">run</span><span class="p">.</span><span class="n">build_up1</span><span class="p">()</span>
-    <span class="n">run</span><span class="p">.</span><span class="n">build_up2</span><span class="p">()</span>
-    <span class="n">run</span><span class="p">.</span><span class="n">build_up3</span><span class="p">()</span>
+    <span class="n">rgb</span> <span class="p">=</span> <span class="n"><span class="caps">RGB</span></span><span class="p">(</span>100<span class="p">,</span> 192<span class="p">,</span> 240<span class="p">)</span>
+    <span class="n">print</span> <span class="n">rgb</span><span class="p">.</span><span class="n">Red</span><span class="p">()</span>
+    <span class="n">proxy</span> <span class="p">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+    <span class="n">print</span> <span class="n">proxy</span><span class="p">.</span><span class="n">Green</span><span class="p">()</span>
+    <span class="n">noblue</span> <span class="p">=</span> <span class="n">NoBlueProxy</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+    <span class="n">print</span> <span class="n">noblue</span><span class="p">.</span><span class="n">Green</span><span class="p">()</span>
+    <span class="n">print</span> <span class="n">noblue</span><span class="p">.</span><span class="n">Blue</span><span class="p">()</span>
 </pre></div>
     </div><!-- /.entry-content -->
     <!-- UY BEGIN -->                                                          

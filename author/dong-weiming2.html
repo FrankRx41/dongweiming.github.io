@@ -100,6 +100,32 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="n">not</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">__instances ...</span></pre></div> </div><!-- /.entry-content -->
         </article></li>
         <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-memento.html" rel="bookmark" title="Permalink to python设计模式之备忘录模式">python设计模式之备忘录模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-06-05T00:00:00"> 星期三, 05 六月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>Memento模式</h2>
+<p>备忘录模式一个最好想象的例子：undo! 它对对象的一个状态进行了&#8217;快照&#8217;，
+在你需要的时候恢复原貌。做前端会有一个场景：你设计一个表单，当点击提交会对表单内容
+验证，这个时候你就要对用户填写的数据复制下来，当用户填写的不正确或者格式不对等问题，&nbsp;就可以使用快照数据恢复用户已经填好的，而不是让用户重新来一遍，不是嘛？</p>
+<h2>python的例子</h2>
+<p>这里实现了一个事务提交的例子</p>
+<div class="highlight"><pre><span class="n">import</span> <span class="n">copy</span>
+
+<span class="n">def</span> <span class="n">Memento</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">deep</span><span class="p">=</span><span class="n">False</span><span class="p">):</span>
+
+    # 对你要做快照的对象做快照
+    <span class="n">state</span> <span class="p">=</span> <span class="p">(</span><span class="n">copy</span><span class="p">.</span><span class="n">copy</span> <span class="k">if</span> <span class="n">deep</span> <span class="k">else</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">)(</span><span class="n">obj</span><span class="p">.</span><span class="n">__dict__</span><span class="p">)</span>
+    <span class="n">def</span> <span class="n">Restore</span><span class="p">():</span>
+        <span class="n">obj</span><span class="p">.</span><span class="n">__dict__</span> <span class="p">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">Restore</span>
+
+<span class="n">class</span> <span class="n">Transaction</span><span class="p">:</span>
+
+    <span class="n">deep</span> <span class="p">=</span> <span class="n">False</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="n">targets ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
                 <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-null.html" rel="bookmark" title="Permalink to python设计模式之Null模式">python设计模式之Null模式</a></h2> </header>
                 <footer class="post-info">
                     <abbr class="published" title="2013-06-01T00:00:00"> 星期六, 01 六月, 2013 </abbr>
@@ -151,6 +177,34 @@
         <span class="n">self</span><span class="p">.</span><span class="n">_myinit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs ...</span></pre></div> </div><!-- /.entry-content -->
         </article></li>
         <li><article class="hentry">
+                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-observer.html" rel="bookmark" title="Permalink to python设计模式之观察者模式">python设计模式之观察者模式</a></h2> </header>
+                <footer class="post-info">
+                    <abbr class="published" title="2013-06-06T00:00:00"> 星期四, 06 六月, 2013 </abbr>
+                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
+                <div class="entry-content"> <h2>观察者模式</h2>
+<p>当我们希望一个对象的状态发生变化，那么依赖与它的所有对象都能相应变化(获得通知),那么就可以用到Observer模式，&nbsp;其中的这些依赖对象就是观察者的对象，那个要发生变化的对象就是所谓&#8217;观察者&#8217;</p>
+<h2>python的例子</h2>
+<div class="highlight"><pre><span class="c"># 这个是观察者基类</span>
+<span class="nb">class</span> <span class="n">Subject</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_observers</span> <span class="p">=</span> <span class="p">[]</span>
+
+    <span class="c"># 添加依赖的对象</span>
+    <span class="n">def</span> <span class="n">attach</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">not</span> <span class="n">observer</span> <span class="n">in</span> <span class="n">self</span><span class="p">.</span><span class="n">_observers</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">_observers</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+
+    <span class="c"># 取消添加</span>
+    <span class="n">def</span> <span class="n">detach</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">_observers</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
+        <span class="n">except</span> <span class="n">ValueError</span><span class="p">:</span>
+            <span class="n">pass</span>
+
+    <span class="c"># 这里只是通知上面注册的依赖对象新的变化</span>
+    <span class="n">def</span> <span class="n">notify</span><span class="p">(</span><span class="n">self ...</span></pre></div> </div><!-- /.entry-content -->
+        </article></li>
+        <li><article class="hentry">
                 <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-pototype.html" rel="bookmark" title="Permalink to python设计模式之原型模式">python设计模式之原型模式</a></h2> </header>
                 <footer class="post-info">
                     <abbr class="published" title="2013-05-28T00:00:00"> 星期二, 28 五月, 2013 </abbr>
@@ -175,68 +229,6 @@
 
     <span class="n">def</span> <span class="n">clone</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="s">&quot;&quot;&quot;克隆对象 ...</span></pre></div> </div><!-- /.entry-content -->
-        </article></li>
-        <li><article class="hentry">
-                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-singleton.html" rel="bookmark" title="Permalink to python设计模式之单例模式">python设计模式之单例模式</a></h2> </header>
-                <footer class="post-info">
-                    <abbr class="published" title="2013-05-16T00:00:00"> 星期四, 16 五月, 2013 </abbr>
-                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
-                <div class="entry-content"> <h2>单例模式</h2>
-<p>通过Singleton模式，全局保证只有一个实例，在python中怎么用呢？</p>
-<h2>python的例子</h2>
-<p>我这里实现了一个pymongo连接的‘缓存’,为了保证在一个进程里面调用只产生一个连接数</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">ConnectionSingleton</span><span class="p">(</span><span class="n">object</span><span class="p">):</span>
-    <span class="s">&#39;&#39;&#39;通过重载实例化函数__new__缓存mongodb连接&#39;&#39;&#39;</span>
-    <span class="n">conn</span><span class="p">=</span><span class="n">None</span>
-    <span class="n">def</span> <span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span> <span class="n">is</span> <span class="n">None</span><span class="p">:</span>
-            <span class="n">cls</span><span class="p">.</span><span class="n">conn</span><span class="p">=</span><span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">conn</span>
-</pre></div>
-
-
-<p>调用的时候可以</p>
-<div class="highlight"><pre><span class="n">db</span> <span class="p">=</span> <span class="n">ConnectionSingleton</span><span class="p">()</span>
-</pre></div>
-
-
-<h2>和pymongo相关的温馨提示</h2>
-<ol>
-<li>请不要使用pymongo.Connection，官网不推荐，并且有个问题，当你close它的实例，连接数并没有立刻减少</li>
-<li>做好数据库操作的类变量的封装，调用完毕要显式close/disconnect</li>
-</ol> </div><!-- /.entry-content -->
-        </article></li>
-        <li><article class="hentry">
-                <header> <h2 class="entry-title"><a href="http://dongweiming.github.io/python-state.html" rel="bookmark" title="Permalink to python设计模式之状态模式">python设计模式之状态模式</a></h2> </header>
-                <footer class="post-info">
-                    <abbr class="published" title="2013-05-26T00:00:00"> 星期日, 26 五月, 2013 </abbr>
-                    <address class="vcard author">By <a class="url fn" href="http://dongweiming.github.io/author/dong-weiming.html">Dong Weiming</a></address>                </footer><!-- /.post-info -->
-                <div class="entry-content"> <h2>State模式</h2>
-<p>状态模式是一种常用的模式，和名字一样，可以在调用时修改其内部属性，看起来就像改变了类的状态</p>
-<h2>python的例子</h2>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">NetworkCardState</span><span class="p">:</span>
-    &quot;&quot;&quot;基类&quot;&quot;&quot;
-    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">raise</span> <span class="n">NotImplementedError</span>
-
-    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">raise</span> <span class="n">NotImplementedError</span>
-
-<span class="n">class</span> <span class="n">Online</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
-    &quot;&quot;&quot;在线&quot;&quot;&quot;
-    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;<span class="n">sending</span> <span class="n">Data</span>&quot;
-
-    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;<span class="n">receiving</span> <span class="n">Data</span>&quot;
-
-<span class="n">class</span> <span class="n">Offline</span><span class="p">(</span><span class="n">NetworkCardState</span><span class="p">):</span>
-    &quot;&quot;&quot;离线&quot;&quot;&quot;
-    <span class="n">def</span> <span class="n">send</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print</span> &quot;<span class="n">cannot</span> <span class="n">send</span><span class="p">...</span><span class="n">Offline</span>&quot;
-
-    <span class="n">def</span> <span class="n">receive</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">print ...</span></pre></div> </div><!-- /.entry-content -->
         </article></li>
 </ol><!-- /#posts-list -->
 <p class="paginator">
@@ -272,14 +264,14 @@
                         <div class="archives">
                   <h2><a href="http://dongweiming.github.io/">最近发表</a></h2>
                   <ul>
+                                        <li><a href="http://dongweiming.github.io/python-observer.html">python设计模式之观察者模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-visitor.html">python设计模式之访问者模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-memento.html">python设计模式之备忘录模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-object-pool.html">python设计模式之对象池模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-proxy.html">python设计模式之代理模式</a></li>
+                                        <li><a href="http://dongweiming.github.io/python-template.html">python设计模式之模板方法模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-null.html">python设计模式之Null模式</a></li>
                                         <li><a href="http://dongweiming.github.io/python-bridge.html">python设计模式之桥接模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-composite.html">python设计模式之组合模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-chain.html">python设计模式之责任链模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-facade.html">python设计模式之外观模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-pototype.html">python设计模式之原型模式</a></li>
-                                        <li><a href="http://dongweiming.github.io/python-adapter.html">python设计模式之Adapter模式</a></li>
                                       </ul>
                 </div><!-- /.archives -->
 
